@@ -1,7 +1,7 @@
 package computer;
 
-import main.java.exceptions.InvalidConnectionException;
-import main.java.exceptions.InvalidConnectionNameException;
+import exceptions.InvalidConnectionException;
+import exceptions.InvalidConnectionNameException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -1,7 +1,7 @@
 package computer;
 
-import main.java.exceptions.EmptyLetterException;
-import main.java.exceptions.LogsQuantityException;
+import exceptions.EmptyLetterException;
+import exceptions.LogsQuantityException;
 import interfaces.ISend;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

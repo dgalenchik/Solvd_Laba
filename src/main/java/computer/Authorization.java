@@ -1,6 +1,6 @@
 package computer;
 
-import main.java.exceptions.InvalidAuthorizationException;
+import exceptions.InvalidAuthorizationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

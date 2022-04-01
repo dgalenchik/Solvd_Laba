@@ -1,9 +1,14 @@
 package computer;
 
-import main.java.exceptions.LogsQuantityException;
+import exceptions.LogsQuantityException;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Main {
@@ -112,11 +117,29 @@ public class Main {
         }
         LOGGER.info(Lenovo.createLenovoOrder(5, ProductNumber.generateNumbers(5)).size());
     }
+    public static void countWords() {
+        try {
+            String s = StringUtils.lowerCase(FileUtils.readFileToString(new File("src/main/resources/text.txt"), StandardCharsets.UTF_8))
+                    .replaceAll("[^\\da-zA-Zа-яёА-ЯЁ ]", "");
+            String[] arr = s.split(" ");
+            Set<String> set = new HashSet(List.of(arr));
+            List<String> lst = new ArrayList<>();
+            for (String str : set) {
+                lst.add(str + " " + StringUtils.countMatches(s, str));
+            }
+            FileUtils.writeLines(new File("src/main/resources/count.txt"), lst);
+            LOGGER.info("The file 'count.txt' was created");
+        } catch (IOException e) {
+            LOGGER.info(e);
+        }
+
+    }
 
     public static void main(String[] args) {
         Main main = new Main();
-        main.runPreviousLessons();
-        main.runLesson7();
 
+        //main.runPreviousLessons();
+        //main.runLesson7();
+        countWords();
     }
 }
