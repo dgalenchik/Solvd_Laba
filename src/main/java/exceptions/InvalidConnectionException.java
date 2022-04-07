@@ -1,6 +1,6 @@
 package exceptions;
 
-public class InvalidConnectionException extends Exception{
+public class InvalidConnectionException extends Exception {
     public InvalidConnectionException() {
     }
 

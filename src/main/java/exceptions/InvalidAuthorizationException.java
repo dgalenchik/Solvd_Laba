@@ -1,6 +1,6 @@
 package exceptions;
 
-public class InvalidAuthorizationException extends Exception{
+public class InvalidAuthorizationException extends Exception {
     public InvalidAuthorizationException() {
     }
 

@@ -1,6 +1,6 @@
 package exceptions;
 
-public class EmptyLetterException extends Exception{
+public class EmptyLetterException extends Exception {
     public EmptyLetterException() {
     }
 

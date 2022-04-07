@@ -1,6 +1,6 @@
 package exceptions;
 
-public class InvalidConnectionNameException extends Exception{
+public class InvalidConnectionNameException extends Exception {
     public InvalidConnectionNameException() {
     }
 

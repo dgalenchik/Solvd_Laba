@@ -1,6 +1,6 @@
 package exceptions;
 
-public class LogsQuantityException extends Exception{
+public class LogsQuantityException extends Exception {
     public LogsQuantityException() {
     }
 

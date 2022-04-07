@@ -1,6 +1,12 @@
 package computer;
 
+import enums.ComputerCharacteristics;
+import enums.MainCharacteristics;
+import enums.Manufactures;
 import exceptions.LogsQuantityException;
+import interfaces.functional.IConvertDoubleToInt;
+import interfaces.functional.ICountAverageFrequency;
+import interfaces.functional.IRename;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -10,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class Main {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
@@ -117,6 +125,7 @@ public class Main {
         }
         LOGGER.info(Lenovo.createLenovoOrder(5, ProductNumber.generateNumbers(5)).size());
     }
+
     public static void countWords() {
         try {
             String s = StringUtils.lowerCase(FileUtils.readFileToString(new File("src/main/resources/text.txt"), StandardCharsets.UTF_8))
@@ -135,11 +144,31 @@ public class Main {
 
     }
 
+    public void lambdaEnumExpressions() {
+        Predicate<Computer> isMacbook = x -> x.equals(macbook);
+        LOGGER.info(isMacbook.test(macbook));
+        LOGGER.info(isMacbook.test(hp));
+        MainCharacteristics r = MainCharacteristics.CPU;
+        ComputerCharacteristics c = ComputerCharacteristics.MEMORY;
+        LOGGER.info(r.getFrequency() + "\n" + c.getManufactures() +
+                "\n" + c.getFrequency() + "\n" + Manufactures.GIGABYTE.getValue());
+        ICountAverageFrequency avg = (firstDevice, secondDevice) -> (firstDevice + secondDevice) / 2;
+        LOGGER.info(avg.count(cpu.getCpuFrequency(), cpu.getCpuFrequency()));
+        Consumer<Macbook> sell = x -> LOGGER.info("Your " + x + " was sold");
+        sell.accept(macbook);
+        IConvertDoubleToInt ic = value -> (int) value;
+        LOGGER.info(ic.convert(cpu.getCpuFrequency()));
+        IRename ren = value -> StringUtils.reverse(value);
+        LOGGER.info(ren.rename(firstClient.getFirstName()));
+    }
+
     public static void main(String[] args) {
         Main main = new Main();
 
         //main.runPreviousLessons();
         //main.runLesson7();
-        countWords();
+        //countWords();
+        main.lambdaEnumExpressions();
+
     }
 }
