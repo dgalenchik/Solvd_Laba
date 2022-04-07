@@ -4,6 +4,7 @@ import enums.ComputerCharacteristics;
 import enums.MainCharacteristics;
 import enums.Manufactures;
 import exceptions.LogsQuantityException;
+import interfaces.IConnect;
 import interfaces.functional.IConvertDoubleToInt;
 import interfaces.functional.ICountAverageFrequency;
 import interfaces.functional.IRename;
@@ -160,6 +161,7 @@ public class Main {
         LOGGER.info(ic.convert(cpu.getCpuFrequency()));
         IRename ren = value -> StringUtils.reverse(value);
         LOGGER.info(ren.rename(firstClient.getFirstName()));
+
     }
 
     public static void main(String[] args) {

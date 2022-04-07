@@ -2,12 +2,6 @@ package enums;
 
 public enum MainCharacteristics {
     CPU(1600d) {
-        private double frequency;
-
-        public double getFreq() {
-            return frequency;
-        }
-
         public String getValue() {
             return "Cpu";
         }

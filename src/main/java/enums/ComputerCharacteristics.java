@@ -6,7 +6,6 @@ public enum ComputerCharacteristics {
     MEMORY(Manufactures.ALIENWARE, MainCharacteristics.MEMORY.getFrequency()),
     GRAPHIC_CARD(Manufactures.DELL, MainCharacteristics.GRAPHIC_CARD.getFrequency()),
     AUDIO_CARD(Manufactures.ALIENWARE, MainCharacteristics.AUDIO_CARD.getFrequency());
-    private String value;
 
     public Manufactures getManufactures() {
         return manufactures;
