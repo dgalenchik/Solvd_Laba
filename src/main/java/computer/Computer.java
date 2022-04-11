@@ -103,7 +103,7 @@ public abstract class Computer implements ISend {
     public abstract String computerInfo();
 
     public String turnOn() {
-        return ("computer.Computer is turned on");
+        return ("Computer is turned on");
     }
 
     public abstract String checkOsVersion();

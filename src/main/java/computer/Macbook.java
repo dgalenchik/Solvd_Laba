@@ -6,18 +6,30 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
-import java.util.Scanner;
 
 public class Macbook extends Laptop {
-    private static int QUANTITY = 0;
+    private static final int QUANTITY = 0;
     public Authorization authorization;
     private static final Logger LOGGER = LogManager.getLogger(Macbook.class);
 
-    public Macbook(String manufacture, String model, String design, String form, Memory memory, GraphicCard graphicCard, AudioCard audioCard, Cpu cpu, float batteryCapacity, float screenSize) {
+    public Macbook(String manufacture, String model, String design, String form, Memory memory, GraphicCard graphicCard, AudioCard audioCard, Cpu cpu, float batteryCapacity, float screenSize, Authorization authorization) {
         super(manufacture, model, design, form, memory, graphicCard, audioCard, cpu, batteryCapacity, screenSize);
-        Scanner in = new Scanner(System.in);
-        authorization = new Authorization(Authorization.readUserName(in), Authorization.readPassword(in));
-        QUANTITY++;
+        this.authorization = authorization;
+    }
+
+//    public Macbook(String manufacture, String model, String design, String form, Memory memory, GraphicCard graphicCard, AudioCard audioCard, Cpu cpu, float batteryCapacity, float screenSize) {
+//        super(manufacture, model, design, form, memory, graphicCard, audioCard, cpu, batteryCapacity, screenSize);
+//        try(Scanner in = new Scanner(System.in)){
+//        authorization = new Authorization(Authorization.readUserName(in), Authorization.readPassword(in));
+//        QUANTITY++;}
+//    }
+
+    public Authorization getAuthorization() {
+        return authorization;
+    }
+
+    public void setAuthorization(Authorization authorization) {
+        this.authorization = authorization;
     }
 
     @Override

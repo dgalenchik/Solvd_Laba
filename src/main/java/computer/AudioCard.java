@@ -33,7 +33,7 @@ public class AudioCard {
 
     @Override
     public String toString() {
-        return ("main.java.computer.AudioCard: " +
+        return ("AudioCard: " +
                 "Manufacture: " + getManufacture() + "; " +
                 "Audio chip manufacture: " + getAudioChipManufacture());
     }

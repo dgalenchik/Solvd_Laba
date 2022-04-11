@@ -4,10 +4,7 @@ import enums.ComputerCharacteristics;
 import enums.MainCharacteristics;
 import enums.Manufactures;
 import exceptions.LogsQuantityException;
-import interfaces.IConnect;
-import interfaces.functional.IConvertDoubleToInt;
-import interfaces.functional.ICountAverageFrequency;
-import interfaces.functional.IRename;
+import interfaces.functional.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -16,9 +13,12 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Main {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
@@ -32,7 +32,7 @@ public class Main {
     Client secondClient = new Client("John", "Michailovich", "Koltyn");
 
     Macbook macbook = new Macbook("IBM", "JS412", "modern", "macbook",
-            memory, graphicCard, audioCard, cpu, 2200f, 13.1f);
+            memory, graphicCard, audioCard, cpu, 2200f, 13.1f, new Authorization("1", "1"));
     Hp hp = new Hp("main.java.computer.Hp", "4530s", "modern", "laptop",
             memory, graphicCard, audioCard, cpu, 4800f, 15.3f);
     Lenovo lenovo = new Lenovo("main.java.computer.Lenovo", "k456", "modern", "laptop",
@@ -41,26 +41,26 @@ public class Main {
 
     public void runPreviousLessons() {
         //Send initial configuration
-        LOGGER.info("Enter username and password for computer.Macbook");
+        LOGGER.info("Enter username and password for Macbook");
         letter.setLetterText("");
         macbook.send(letter, firstClient, secondClient);
         letter.setLetterText(macbook.computerInfo());
         macbook.send(letter, firstClient, secondClient);
         //Change configuration of main.java.computer.Computer
-        macbook.setManufacture("main.java.computer.Macbook");
+        macbook.setManufacture("Macbook");
         macbook.setModel("KRT45967");
         cpu.setCpuManufacture("Intel");
         memory.setCapacity(1024);
         audioCard.setManufacture("Alien Heath");
-        //Change text of main.java.computer.Letter
+        //Change text of Letter
         letter.setLetterText(macbook.computerInfo());
         //Send return main.java.computer.Letter with necessary configuration
         macbook.send(letter, secondClient, firstClient);
-        //Run main.java.computer.Macbook methods
+        //Run Macbook methods
         LOGGER.info(macbook.toString());
-        //Run main.java.computer.Hp methods
+        //Run Hp methods
         LOGGER.info(hp.toString());
-        //Run main.java.computer.Lenovo methods
+        //Run Lenovo methods
         LOGGER.info(lenovo.toString());
 
         //Run methods from Interfaces
@@ -77,19 +77,19 @@ public class Main {
         try (Scanner input = new Scanner(System.in)) {
             LOGGER.info("Connect your devices? Y/N ");
             if (input.next().equals("Y")) {
-                LOGGER.info("Enter the address to connect main.java.computer.Macbook: ");
+                LOGGER.info("Enter the address to connect Macbook: ");
                 macbook.connectTo(input.next());
-                LOGGER.info("Enter the address to connect main.java.computer.Hp: ");
+                LOGGER.info("Enter the address to connect Hp: ");
                 hp.connectTo(input.next());
-                LOGGER.info("Enter the address to connect main.java.computer.Lenovo: ");
+                LOGGER.info("Enter the address to connect Lenovo: ");
                 lenovo.connectTo(input.next());
 
             }
             LOGGER.info("-------------" + "\n" + "Root authorization: ");
             //Run root authorization with static fields
             Authorization.rootAuthorize(Authorization.readUserName(input), Authorization.readPassword(input));
-            //Run authorization for main.java.computer.Macbook
-            LOGGER.info("-------------" + "\n" + "main.java.computer.Authorization for main.java.computer.Macbook: ");
+            //Run authorization for Macbook
+            LOGGER.info("-------------" + "\n" + "Authorization for Macbook: ");
             macbook.authorization.authorize(Authorization.readUserName(input), Authorization.readPassword(input));
         }
     }
@@ -121,9 +121,7 @@ public class Main {
                 uniqueClients.add(i.getValue());
             }
         }
-        for (Client i : uniqueClients) {
-            LOGGER.info(i.toString());
-        }
+        uniqueClients.stream().forEach(LOGGER::info);
         LOGGER.info(Lenovo.createLenovoOrder(5, ProductNumber.generateNumbers(5)).size());
     }
 
@@ -133,10 +131,9 @@ public class Main {
                     .replaceAll("[^\\da-zA-Zа-яёА-ЯЁ ]", "");
             String[] arr = s.split(" ");
             Set<String> set = new HashSet(List.of(arr));
-            List<String> lst = new ArrayList<>();
-            for (String str : set) {
-                lst.add(str + " " + StringUtils.countMatches(s, str));
-            }
+            List<String> lst = set.stream()
+                    .map(x -> x + " " + StringUtils.countMatches(s, x))
+                    .collect(Collectors.toList());
             FileUtils.writeLines(new File("src/main/resources/count.txt"), lst);
             LOGGER.info("The file 'count.txt' was created");
         } catch (IOException e) {
@@ -155,21 +152,22 @@ public class Main {
                 "\n" + c.getFrequency() + "\n" + Manufactures.GIGABYTE.getValue());
         ICountAverageFrequency avg = (firstDevice, secondDevice) -> (firstDevice + secondDevice) / 2;
         LOGGER.info(avg.count(cpu.getCpuFrequency(), cpu.getCpuFrequency()));
-        Consumer<Macbook> sell = x -> LOGGER.info("Your " + x + " was sold");
+        Consumer<Macbook> sell = x -> LOGGER.info("Your " + x.getManufacture() + " was sold");
         sell.accept(macbook);
         IConvertDoubleToInt ic = value -> (int) value;
         LOGGER.info(ic.convert(cpu.getCpuFrequency()));
         IRename ren = value -> StringUtils.reverse(value);
-        LOGGER.info(ren.rename(firstClient.getFirstName()));
-
+        IAddTime a = () -> IAddTime.FORMATTER.format(Calendar.getInstance().getTime());
+        LOGGER.info(ren.rename(firstClient.getFirstName()) + " " + a.addTime());
+        IConvertMah conv = value -> String.valueOf(value / 200);
+        LOGGER.info(conv.convert(macbook.getBatteryCapacity()));
     }
 
     public static void main(String[] args) {
         Main main = new Main();
-
-        //main.runPreviousLessons();
-        //main.runLesson7();
-        //countWords();
+//        main.runPreviousLessons();
+//        main.runLesson7();
+//        countWords();
         main.lambdaEnumExpressions();
 
     }

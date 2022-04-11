@@ -32,12 +32,10 @@ public class Cpu {
 
     @Override
     public String toString() {
-        return ("main.java.computer.Cpu: " + "main.java.computer.Cpu manufacture: " +
+        return ("Cpu: " + "Cpu manufacture: " +
                 getCpuManufacture() + "; " +
-                "main.java.computer.Cpu frequency: " +
+                "Cpu frequency: " +
                 getCpuFrequency());
     }
-
-    ;
 
 }

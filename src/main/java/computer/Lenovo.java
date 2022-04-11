@@ -3,7 +3,9 @@ package computer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Lenovo extends Laptop {
     private static final Logger LOGGER = LogManager.getLogger(Computer.class);
@@ -14,6 +16,14 @@ public class Lenovo extends Laptop {
 
     public Lenovo(String manufacture, String model, String design, String form, Memory memory, GraphicCard graphicCard, AudioCard audioCard, Cpu cpu, float batteryCapacity, float screenSize, int productNumber) {
         super(manufacture, model, design, form, memory, graphicCard, audioCard, cpu, batteryCapacity, screenSize);
+        this.productNumber = productNumber;
+    }
+
+    public int getProductNumber() {
+        return productNumber;
+    }
+
+    public void setProductNumber(int productNumber) {
         this.productNumber = productNumber;
     }
 
@@ -30,7 +40,7 @@ public class Lenovo extends Laptop {
         } catch (Exception exception) {
             LOGGER.info("Battery information request");
         } finally {
-            return ("main.java.computer.Lenovo Battery capacity: " + getBatteryCapacity() + " mah");
+            return ("Lenovo Battery capacity: " + getBatteryCapacity() + " mah");
         }
     }
 
@@ -57,7 +67,7 @@ public class Lenovo extends Laptop {
 
     @Override
     public void connectTo(String str) {
-        LOGGER.info("Your main.java.computer.Lenovo connected to: " + str);
+        LOGGER.info("Lenovo connected to: " + str);
     }
 
     public static Map createLenovoOrder(int Quantity, List ProductNumber) {

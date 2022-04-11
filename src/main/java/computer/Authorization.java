@@ -7,30 +7,24 @@ import org.apache.logging.log4j.Logger;
 import java.util.Objects;
 import java.util.Scanner;
 
-public final class Authorization {
-    public static String ROOT_USERNAME = "root";
-    public static String ROOT_PASSWORD = "root";
+public record Authorization(String userName, String password) {
+    public static String rootUsername = "root";
+    public static String rootPassword = "root";
     public static final String MESSAGE;
-    private final String userName;
-    private final String password;
-    private static Logger LOGGER = LogManager.getLogger(Authorization.class);
-
-    public Authorization(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
-    }
+    private static final Logger LOGGER = LogManager.getLogger(Authorization.class);
 
     static {
-        MESSAGE = "main.java.computer.Authorization: Enter your login and password";
+        MESSAGE = "Authorization: Enter your login and password";
     }
 
     public static void rootInitialization() {
-        Scanner in = new Scanner(System.in);
-        LOGGER.info("You need to enter root Username and Password");
-        LOGGER.info("Enter the root username: ");
-        ROOT_USERNAME = in.next();
-        LOGGER.info("Enter the root password: ");
-        ROOT_PASSWORD = in.next();
+        try (Scanner in = new Scanner(System.in)) {
+            LOGGER.info("You need to enter root Username and Password");
+            LOGGER.info("Enter the root username: ");
+            rootUsername = in.next();
+            LOGGER.info("Enter the root password: ");
+            rootPassword = in.next();
+        }
 
     }
 
@@ -57,11 +51,11 @@ public final class Authorization {
         return in.next();
     }
 
-    //root main.java.computer.Authorization
+    //Authorization
     public static void rootAuthorize(String user, String pass) {
         try {
-            if (user.equals(ROOT_USERNAME) && pass.equals(ROOT_PASSWORD))
-                LOGGER.info("main.java.computer.Authorization successful!");
+            if (user.equals(rootUsername) && pass.equals(rootPassword))
+                LOGGER.info("Authorization successful!");
             else
                 LOGGER.info("Username or password is wrong");
             throw new InvalidAuthorizationException("Username or password is wrong");
@@ -71,11 +65,11 @@ public final class Authorization {
         }
     }
 
-    //main.java.computer.Authorization for devices
+    //Authorization for devices
     public void authorize(String user, String pass) {
         try {
             if (user.equals(this.userName) && pass.equals(this.password))
-                LOGGER.info("main.java.computer.Authorization successful!");
+                LOGGER.info("Authorization successful!");
             else
                 throw new InvalidAuthorizationException("Username or password is wrong");
         } catch (InvalidAuthorizationException e) {

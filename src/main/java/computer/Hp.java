@@ -21,7 +21,7 @@ public class Hp extends Laptop {
 
     @Override
     public String batteryInfo() {
-        return ("main.java.computer.Hp Battery capacity: " + getBatteryCapacity() + " mah");
+        return ("Hp Battery capacity: " + getBatteryCapacity() + " mah");
     }
 
     @Override
@@ -46,6 +46,6 @@ public class Hp extends Laptop {
 
     @Override
     public void connectTo(String str) {
-        LOGGER.info("Your main.java.computer.Hp connected to: " + str);
+        LOGGER.info("Your Hp connected to: " + str);
     }
 }

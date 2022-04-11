@@ -48,7 +48,7 @@ public class Client {
 
     @Override
     public String toString() {
-        return "computer.Client{" +
+        return "Client{" +
                 "firstName='" + firstName + '\'' +
                 ", patronymicName='" + patronymicName + '\'' +
                 ", surname='" + surname + '\'' +

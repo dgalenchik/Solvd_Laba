@@ -38,15 +38,13 @@ public class Memory {
         this.memoryType = memoryType;
     }
 
-    //выдаём информацию о main.java.computer.Memory
 
     @Override
     public String toString() {
-        return ("main.java.computer.Memory: " +
-                "main.java.computer.Memory manufacture: " + getManufacture() + "; " +
+        return ("Memory: " +
+                "Memory manufacture: " + getManufacture() + "; " +
                 "Capacity: " + getCapacity() + "; " +
-                "main.java.computer.Memory Type: " + getMemoryType());
+                "Memory Type: " + getMemoryType());
     }
 
-    ;
 }

@@ -43,9 +43,8 @@ public class GraphicCard {
     public String toString() {
         return ("Graphic card: " +
                 "Graphic card manufacture: " + getManufacture() + "; " +
-                "main.java.computer.Memory capacity: " + getVideoMemoryCapacity() + "; " +
+                "Memory capacity: " + getVideoMemoryCapacity() + "; " +
                 "Serial number: " + getVideoChipSerialNumber());
     }
 
-    ;
 }

@@ -69,9 +69,8 @@ public abstract class Laptop extends Computer implements IScreenshot, IPlay, IRe
     }
 
     public static <T> void showOrder(List<T> list) {
-        for (T element : list) {
-            LOGGER.info(element);
-        }
+        list.stream().filter(x -> x instanceof Lenovo)
+                .forEach(LOGGER::info);
     }
 
 }
