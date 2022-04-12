@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
@@ -114,7 +115,6 @@ public class Main {
         }
 
         Computer.removeLogs();
-
         Set<Client> uniqueClients = new HashSet();
         for (Map.Entry<String, Client> i : clients.entrySet()) {
             if (!uniqueClients.contains(i)) {
@@ -123,6 +123,18 @@ public class Main {
         }
         uniqueClients.stream().forEach(LOGGER::info);
         LOGGER.info(Lenovo.createLenovoOrder(5, ProductNumber.generateNumbers(5)).size());
+        linkedList.LinkedList<String> linkedList=new linkedList.LinkedList<String>();
+        linkedList.addLast("B");
+        linkedList.addLast("C");
+        linkedList.addLast("D");
+        linkedList.addLast("E");
+        LOGGER.info("LL: "+linkedList);
+        linkedList.addFirst("A");
+        LOGGER.info("LL: "+linkedList);
+        LOGGER.info("Index of E "+linkedList.get("E"));
+        LOGGER.info("Index of Z "+linkedList.get("Z"));
+        linkedList.remove("C");
+        LOGGER.info("LL: "+linkedList);
     }
 
     public static void countWords() {
