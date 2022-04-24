@@ -12,14 +12,15 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Main {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
@@ -40,7 +41,7 @@ public class Main {
             memory, graphicCard, audioCard, cpu, 6800f, 14.3f, 58887);
     Letter letter = new Letter(macbook.computerInfo());
 
-    public void runPreviousLessons() {
+    private void runPreviousLessons() {
         //Send initial configuration
         LOGGER.info("Enter username and password for Macbook");
         letter.setLetterText("");
@@ -95,7 +96,7 @@ public class Main {
         }
     }
 
-    public void runLesson7() {
+    private void runLesson7() {
         //HomeTask 6
         LinkedList<Laptop> order = new LinkedList<>();
         order.add(macbook);
@@ -107,7 +108,6 @@ public class Main {
         clients.put("1", firstClient);
         clients.put("2", secondClient);
         LOGGER.info(clients.get("2").toString());
-
         try {
             Computer.countLogs();
         } catch (LogsQuantityException e) {
@@ -123,21 +123,21 @@ public class Main {
         }
         uniqueClients.stream().forEach(LOGGER::info);
         LOGGER.info(Lenovo.createLenovoOrder(5, ProductNumber.generateNumbers(5)).size());
-        linkedList.LinkedList<String> linkedList=new linkedList.LinkedList<String>();
+        linkedList.LinkedList<String> linkedList = new linkedList.LinkedList<String>();
         linkedList.addLast("B");
         linkedList.addLast("C");
         linkedList.addLast("D");
         linkedList.addLast("E");
-        LOGGER.info("LL: "+linkedList);
+        LOGGER.info("LL: " + linkedList);
         linkedList.addFirst("A");
-        LOGGER.info("LL: "+linkedList);
-        LOGGER.info("Index of E "+linkedList.get("E"));
-        LOGGER.info("Index of Z "+linkedList.get("Z"));
+        LOGGER.info("LL: " + linkedList);
+        LOGGER.info("Index of E " + linkedList.get("E"));
+        LOGGER.info("Index of Z " + linkedList.get("Z"));
         linkedList.remove("C");
-        LOGGER.info("LL: "+linkedList);
+        LOGGER.info("LL: " + linkedList);
     }
 
-    public static void countWords() {
+    private static void countWords() {
         try {
             String s = StringUtils.lowerCase(FileUtils.readFileToString(new File("src/main/resources/text.txt"), StandardCharsets.UTF_8))
                     .replaceAll("[^\\da-zA-Zа-яёА-ЯЁ ]", "");
@@ -154,7 +154,7 @@ public class Main {
 
     }
 
-    public void lambdaEnumExpressions() {
+    private void runlambdaEnumExpressions() {
         Predicate<Computer> isMacbook = x -> x.equals(macbook);
         LOGGER.info(isMacbook.test(macbook));
         LOGGER.info(isMacbook.test(hp));
@@ -175,12 +175,84 @@ public class Main {
         LOGGER.info(conv.convert(macbook.getBatteryCapacity()));
     }
 
+    private void useReflectionAPI() {
+        Field[] fields = Memory.class.getDeclaredFields();
+        Arrays.stream(fields).forEach(LOGGER::info);
+        Constructor<?>[] constructors = Memory.class.getDeclaredConstructors();
+        Arrays.stream(constructors).forEach(LOGGER::info);
+        Method[] methods = Memory.class.getDeclaredMethods();
+        Arrays.stream(methods).forEach(LOGGER::info);
+        Memory mem = null;
+        try {
+            mem = (Memory) constructors[1].newInstance("arg1", 25, "arg2");
+        } catch (InstantiationException e) {
+            LOGGER.info(e);
+        } catch (IllegalAccessException e) {
+            LOGGER.info(e);
+        } catch (InvocationTargetException e) {
+            LOGGER.info(e);
+        }
+        Field fieldFirst = null;
+        try {
+            fieldFirst = mem.getClass().getDeclaredField("capacity");
+        } catch (NoSuchFieldException e) {
+            LOGGER.info(e);
+        }
+        fieldFirst.setAccessible(true);
+        try {
+            fieldFirst.set(mem, 2555);
+        } catch (IllegalAccessException e) {
+            LOGGER.info(e);
+        }
+        Method m = null;
+        try {
+
+            m = mem.getClass().getDeclaredMethod("get" + StringUtils.capitalize(fields[0].getName()));
+        } catch (NoSuchMethodException e) {
+            LOGGER.info(e);
+        }
+        try {
+            LOGGER.info(m.invoke(mem).toString());
+        } catch (IllegalAccessException e) {
+            LOGGER.info(e);
+        } catch (InvocationTargetException e) {
+            LOGGER.info(e);
+        }
+        LOGGER.info(mem.getCapacity());
+    }
+
+    private void runDeadLock() {
+        Object lock1 = new Object();
+        Object lock2 = new Object();
+        Thread thread1 = new Thread(() -> {
+            synchronized (lock1) {
+                LOGGER.info(Thread.currentThread().getName() + " Handle lock1");
+                synchronized (lock2) {
+                    LOGGER.info(Thread.currentThread().getName() + " Handle lock2");
+                }
+            }
+        }, "Thread1");
+        Thread thread2 = new Thread(() -> {
+            synchronized (lock2) {
+                LOGGER.info(Thread.currentThread().getName() + " Handle lock2");
+                synchronized (lock1) {
+                    LOGGER.info(Thread.currentThread().getName() + " Handle lock1");
+                }
+            }
+        }, "Thread2");
+        thread1.start();
+        thread2.start();
+    }
+
+
     public static void main(String[] args) {
         Main main = new Main();
 //        main.runPreviousLessons();
 //        main.runLesson7();
 //        countWords();
-        main.lambdaEnumExpressions();
+//        main.runlambdaEnumExpressions();
+//        main.useReflectionAPI();
+        main.runDeadLock();
 
     }
 }

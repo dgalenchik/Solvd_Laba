@@ -12,7 +12,7 @@ public enum Manufactures {
     MSI("Msi"),
     GIGABYTE("Gigabyte"),
     HYPERPC("Hyperpc");
-    private String value;
+    private final String value;
 
     Manufactures(String value) {
         this.value = value;

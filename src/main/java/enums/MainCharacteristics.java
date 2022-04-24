@@ -21,7 +21,7 @@ public enum MainCharacteristics {
             return "AUDIO_CARD";
         }
     };
-    private double frequency;
+    private final double frequency;
 
     MainCharacteristics(double freq) {
         this.frequency = freq;

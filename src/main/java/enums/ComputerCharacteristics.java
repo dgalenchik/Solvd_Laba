@@ -7,8 +7,8 @@ public enum ComputerCharacteristics {
     GRAPHIC_CARD(Manufactures.DELL, MainCharacteristics.GRAPHIC_CARD.getFrequency()),
     AUDIO_CARD(Manufactures.ALIENWARE, MainCharacteristics.AUDIO_CARD.getFrequency());
 
-    private Manufactures manufactures;
-    private String frequency;
+    private final Manufactures manufactures;
+    private final String frequency;
 
     ComputerCharacteristics(Manufactures manufactures, String freq) {
         this.manufactures = manufactures;
