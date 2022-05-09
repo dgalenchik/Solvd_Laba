@@ -104,8 +104,10 @@ FROM
     `users` ON clients_id = users.id
         AND workers.users_id = users.id;
     
+    insert cars (manufacture, year) VALUES ("Volvo",2000);
     SELECT manufacture , COUNT(*) AS Quantity, avg(year) AS Average_year, 
     min(year) AS Min_year, max(year) AS Max_year FROM cars group by manufacture;
+    
     
     SELECT SUM(price) AS Revenue FROM orders;
 	SELECT name,clients_id,max(price) AS Max_price, 
