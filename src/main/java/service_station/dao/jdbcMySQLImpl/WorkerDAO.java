@@ -2,18 +2,19 @@ package service_station.dao.jdbcMySQLImpl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import service_station.dao.IUserDAO;
-import service_station.models.User;
+import service_station.dao.IWorkerDAO;
+import service_station.models.Order;
+import service_station.models.Worker;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
-public class UserDAO implements IUserDAO {
-    private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
+public class WorkerDAO implements IWorkerDAO {
+    private static final Logger LOGGER = LogManager.getLogger(WorkerDAO.class);
     private static Properties p = new Properties();
-    private User user = new User();
+    private Worker worker = new Worker();
     private Connection connection = null;
     private PreparedStatement pr = null;
     private ResultSet resultSet = null;
@@ -31,44 +32,43 @@ public class UserDAO implements IUserDAO {
         userName = p.getProperty("db.username");
         password = p.getProperty("db.password");
     }
-
     @Override
-    public User getEntityById(int id) {
+    public Worker getEntityById(int id) {
         try {
             connection = DriverManager.getConnection(url, userName, password);
-            pr = connection.prepareStatement("Select * From Users where id=?");
+            pr = connection.prepareStatement("Select * from workers where id=?");
             pr.setInt(1, id);
             pr.execute();
             resultSet = pr.getResultSet();
             while (resultSet.next()) {
-                user.setId(resultSet.getInt("id"));
-                user.setName(resultSet.getString("name"));
-                user.setEmail(resultSet.getString("email"));
-                user.setSurname(resultSet.getString("surname"));
+                worker.setId(resultSet.getInt("id"));
+                worker.setPosition(resultSet.getString("position"));
+                worker.setExperience(resultSet.getInt("experience"));
+                worker.setUsers_id(resultSet.getInt("users_id"));
             }
-
         } catch (SQLException e) {
             LOGGER.info(e);
         } finally {
             try {
                 if (connection != null) connection.close();
-                if (pr != null) pr.close();
                 if (resultSet != null) resultSet.close();
+                if (pr != null) pr.close();
             } catch (SQLException e) {
                 LOGGER.info(e);
             }
         }
-        return user;
+        return worker;
     }
 
     @Override
-    public void saveEntity(User entity) {
+    public void saveEntity(Worker entity) {
         try {
             connection = DriverManager.getConnection(url, userName, password);
-            pr = connection.prepareStatement("Insert into users (name,surname,email) Values (?,?,?)");
-            pr.setString(1, entity.getName());
-            pr.setString(2, entity.getSurname());
-            pr.setString(3, entity.getEmail());
+            pr = connection.prepareStatement
+                    ("Insert into workers (position,experience,users_id) Values (?,?,?)");
+            pr.setString(1, entity.getPosition());
+            pr.setInt(2, entity.getExperience());
+            pr.setInt(3,entity.getUsers_id());
             pr.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -83,14 +83,15 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public void updateEntity(User entity) {
+    public void updateEntity(Worker entity) {
         try {
             connection = DriverManager.getConnection(url, userName, password);
-            pr = connection.prepareStatement("Update users Set name=?,`surname`=?,`email`=? where id=?");
-            pr.setString(1, entity.getName());
-            pr.setString(2, entity.getSurname());
-            pr.setString(3, entity.getEmail());
-            pr.setInt(4, entity.getId());
+            pr = connection.prepareStatement
+                    ("Update workers Set position=?,`experience`=?,users_id=? where id=?");
+            pr.setString(1, entity.getPosition());
+            pr.setInt(2, entity.getExperience());
+            pr.setInt(3, entity.getUsers_id());
+            pr.setInt(4,entity.getId());
             pr.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -104,37 +105,13 @@ public class UserDAO implements IUserDAO {
         }
     }
 
-
     @Override
-    public void removeEntity(User entity) {
+    public void removeEntity(Worker entity) {
         try {
             connection = DriverManager.getConnection(url, userName, password);
-            pr = connection.prepareStatement("Delete from users where id=?");
+            pr = connection.prepareStatement("Delete from workers where id=?");
             pr.setInt(1, entity.getId());
-            pr.execute();
-        } catch (SQLException e) {
-            LOGGER.info(e);
-        } finally {
-            try {
-                if (connection != null) connection.close();
-                if (pr != null) pr.close();
-            } catch (SQLException e) {
-                LOGGER.info(e);
-            }
-        }
-    }
-
-    @Override
-    public void generateUsers(String name, String surname, String email, int quantity) {
-        try {
-            connection = DriverManager.getConnection(url, userName, password);
-            pr = connection.prepareStatement("Insert into users (name,surname,email) Values (?,?,?)");
-            for (int i = 0; i < quantity; i++) {
-                pr.setString(1, name + "_" + i);
-                pr.setString(2, surname + "_" + i);
-                pr.setString(3, email + "_" + i);
-                pr.executeUpdate();
-            }
+            pr.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info(e);
         } finally {
@@ -151,27 +128,28 @@ public class UserDAO implements IUserDAO {
     public void showAll() {
         try {
             connection = DriverManager.getConnection(url, userName, password);
-            pr = connection.prepareStatement("Select * From Users");
+            pr = connection.prepareStatement("Select * from workers");
             pr.execute();
             resultSet = pr.getResultSet();
             while (resultSet.next()) {
-                user.setId(resultSet.getInt("id"));
-                user.setName(resultSet.getString("name"));
-                user.setEmail(resultSet.getString("email"));
-                user.setSurname(resultSet.getString("surname"));
-                LOGGER.info(user);
+                worker.setId(resultSet.getInt("id"));
+                worker.setPosition(resultSet.getString("position"));
+                worker.setExperience(resultSet.getInt("experience"));
+                worker.setUsers_id(resultSet.getInt("users_id"));
+                LOGGER.info(worker);
             }
-
         } catch (SQLException e) {
             LOGGER.info(e);
         } finally {
             try {
                 if (connection != null) connection.close();
-                if (pr != null) pr.close();
                 if (resultSet != null) resultSet.close();
+                if (pr != null) pr.close();
             } catch (SQLException e) {
                 LOGGER.info(e);
             }
         }
     }
 }
+
+

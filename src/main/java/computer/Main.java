@@ -9,11 +9,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import service_station.dao.IUserDAO;
-import service_station.dao.jdbcMySQLImpl.UserDAO;
+import service_station.dao.*;
+import service_station.dao.jdbcMySQLImpl.*;
+import service_station.models.Car;
+import service_station.models.Order;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -254,11 +255,18 @@ public class Main {
 //        main.runLesson7();
 //        countWords();
 //        main.runlambdaEnumExpressions();
-//        main.useReflectionAPI();
-        //main.runDeadLock();
-
-
-
-
+//        main.useReflectionAPI()
+//          main.runDeadLock();
+//       IUserDAO u = new UserDAO();
+//        User u1 = new User("Ivanov", "Ivan", "Ivann@mail.ru");
+//        LOGGER.info(u.getEntityById(2));
+//        u.saveEntity(u1);
+//        u.generateUsers("Boris", "Moiseev", "bor@test", 10);
+//        u1.setId(15);
+//        LOGGER.info(u1.getId() + u1.getName() + u1.getSurname() + u1.getEmail());
+//        u.updateEntity(u1);
+//        u.removeEntity(u1);
+IWorkerDAO workerDAO = new WorkerDAO();
+workerDAO.showAll();
     }
 }

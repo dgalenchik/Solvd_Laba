@@ -114,5 +114,21 @@ FROM
     min(price) AS Min_price FROM orders group by clients_id,name 
     order by clients_id;
     
-    SELECT name,manufacture FROM users JOIN cars 
+Insert into mydb.cars (manufacture,year) values("Audi",2006);
+    select manufacture, count(manufacture) as Quantity, avg(year) as Average_year from mydb.cars
+    group by manufacture having avg(year)>2005;
     
+    select manufacture,year, count(manufacture) as Quantity from mydb.cars group by manufacture having year<2011 and Quantity>1;
+    
+    select name,workers_id,clients_id,cars_id,avg(price) as Avg_price from mydb.orders group by name having Avg_price>2000;
+    
+    select name,avg(price),workers_id from mydb.orders group by workers_id having name="Security problem";
+    
+    select name, surname, email,position, experience,users_id from mydb.users 
+    Join mydb.workers on users.id=users_id group by name having email is not null;
+    
+    select name,surname, position,experience,users_id from mydb.users 
+    Join mydb.workers On users.id=users_id group by name having avg(experience)>5;
+    
+    select count(manufacture) as Quantity,manufacture, perfomance from mydb.compressors 
+    group by perfomance having perfomance>1200;

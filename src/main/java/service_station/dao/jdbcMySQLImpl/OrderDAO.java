@@ -2,18 +2,18 @@ package service_station.dao.jdbcMySQLImpl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import service_station.dao.IUserDAO;
-import service_station.models.User;
+import service_station.dao.IOrderDAO;
+import service_station.models.Order;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
-public class UserDAO implements IUserDAO {
-    private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
+public class OrderDAO implements IOrderDAO {
+    private static final Logger LOGGER = LogManager.getLogger(OrderDAO.class);
     private static Properties p = new Properties();
-    private User user = new User();
+    private Order order = new Order();
     private Connection connection = null;
     private PreparedStatement pr = null;
     private ResultSet resultSet = null;
@@ -33,42 +33,46 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public User getEntityById(int id) {
+    public Order getEntityById(int id) {
         try {
             connection = DriverManager.getConnection(url, userName, password);
-            pr = connection.prepareStatement("Select * From Users where id=?");
+            pr = connection.prepareStatement("Select * from orders where id=?");
             pr.setInt(1, id);
             pr.execute();
             resultSet = pr.getResultSet();
             while (resultSet.next()) {
-                user.setId(resultSet.getInt("id"));
-                user.setName(resultSet.getString("name"));
-                user.setEmail(resultSet.getString("email"));
-                user.setSurname(resultSet.getString("surname"));
+                order.setId(resultSet.getInt("id"));
+                order.setName(resultSet.getString("name"));
+                order.setPrice(resultSet.getInt("price"));
+                order.setWorkers_id(resultSet.getInt("workers_id"));
+                order.setClients_id(resultSet.getInt("clients_id"));
+                order.setCars_id(resultSet.getInt("cars_id"));
             }
-
         } catch (SQLException e) {
             LOGGER.info(e);
         } finally {
             try {
                 if (connection != null) connection.close();
-                if (pr != null) pr.close();
                 if (resultSet != null) resultSet.close();
+                if (pr != null) pr.close();
             } catch (SQLException e) {
                 LOGGER.info(e);
             }
         }
-        return user;
+        return order;
     }
 
     @Override
-    public void saveEntity(User entity) {
+    public void saveEntity(Order entity) {
         try {
             connection = DriverManager.getConnection(url, userName, password);
-            pr = connection.prepareStatement("Insert into users (name,surname,email) Values (?,?,?)");
+            pr = connection.prepareStatement
+                    ("Insert into orders (name,price,workers_id,clients_id,cars_id) Values (?,?,?,?,?)");
             pr.setString(1, entity.getName());
-            pr.setString(2, entity.getSurname());
-            pr.setString(3, entity.getEmail());
+            pr.setInt(2, entity.getPrice());
+            pr.setInt(3, entity.getWorkers_id());
+            pr.setInt(4, entity.getClients_id());
+            pr.setInt(5, entity.getCars_id());
             pr.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -83,14 +87,17 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public void updateEntity(User entity) {
+    public void updateEntity(Order entity) {
         try {
             connection = DriverManager.getConnection(url, userName, password);
-            pr = connection.prepareStatement("Update users Set name=?,`surname`=?,`email`=? where id=?");
+            pr = connection.prepareStatement
+                    ("Update orders Set name=?,`price`=?,workers_id=?,clients_id=?,cars_id=? where id=?");
             pr.setString(1, entity.getName());
-            pr.setString(2, entity.getSurname());
-            pr.setString(3, entity.getEmail());
-            pr.setInt(4, entity.getId());
+            pr.setInt(2, entity.getPrice());
+            pr.setInt(3, entity.getWorkers_id());
+            pr.setInt(4, entity.getClients_id());
+            pr.setInt(5, entity.getCars_id());
+            pr.setInt(6, entity.getId());
             pr.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -104,37 +111,13 @@ public class UserDAO implements IUserDAO {
         }
     }
 
-
     @Override
-    public void removeEntity(User entity) {
+    public void removeEntity(Order entity) {
         try {
             connection = DriverManager.getConnection(url, userName, password);
-            pr = connection.prepareStatement("Delete from users where id=?");
+            pr = connection.prepareStatement("Delete from orders where id=?");
             pr.setInt(1, entity.getId());
-            pr.execute();
-        } catch (SQLException e) {
-            LOGGER.info(e);
-        } finally {
-            try {
-                if (connection != null) connection.close();
-                if (pr != null) pr.close();
-            } catch (SQLException e) {
-                LOGGER.info(e);
-            }
-        }
-    }
-
-    @Override
-    public void generateUsers(String name, String surname, String email, int quantity) {
-        try {
-            connection = DriverManager.getConnection(url, userName, password);
-            pr = connection.prepareStatement("Insert into users (name,surname,email) Values (?,?,?)");
-            for (int i = 0; i < quantity; i++) {
-                pr.setString(1, name + "_" + i);
-                pr.setString(2, surname + "_" + i);
-                pr.setString(3, email + "_" + i);
-                pr.executeUpdate();
-            }
+            pr.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info(e);
         } finally {
@@ -151,27 +134,29 @@ public class UserDAO implements IUserDAO {
     public void showAll() {
         try {
             connection = DriverManager.getConnection(url, userName, password);
-            pr = connection.prepareStatement("Select * From Users");
+            pr = connection.prepareStatement("Select * from orders");
             pr.execute();
             resultSet = pr.getResultSet();
             while (resultSet.next()) {
-                user.setId(resultSet.getInt("id"));
-                user.setName(resultSet.getString("name"));
-                user.setEmail(resultSet.getString("email"));
-                user.setSurname(resultSet.getString("surname"));
-                LOGGER.info(user);
+                order.setId(resultSet.getInt("id"));
+                order.setName(resultSet.getString("name"));
+                order.setPrice(resultSet.getInt("price"));
+                order.setWorkers_id(resultSet.getInt("workers_id"));
+                order.setClients_id(resultSet.getInt("clients_id"));
+                order.setCars_id(resultSet.getInt("cars_id"));
+                LOGGER.info(order);
             }
-
         } catch (SQLException e) {
             LOGGER.info(e);
         } finally {
             try {
                 if (connection != null) connection.close();
-                if (pr != null) pr.close();
                 if (resultSet != null) resultSet.close();
+                if (pr != null) pr.close();
             } catch (SQLException e) {
                 LOGGER.info(e);
             }
         }
     }
 }
+
