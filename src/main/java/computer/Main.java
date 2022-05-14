@@ -9,10 +9,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import service_station.dao.*;
-import service_station.dao.jdbcMySQLImpl.*;
-import service_station.models.Car;
-import service_station.models.Order;
+import service_station.dao.ICarDAO;
+import service_station.dao.IUserDAO;
+import service_station.dao.jdbcMySQLImpl.CarDAO;
+import service_station.dao.jdbcMySQLImpl.UserDAO;
 
 import java.io.File;
 import java.io.IOException;
@@ -248,6 +248,22 @@ public class Main {
         thread2.start();
     }
 
+    public void runPool() {
+        ICarDAO carDAO = new CarDAO();
+        IUserDAO userDAO = new UserDAO();
+        Thread thread1 = new Thread(() -> {
+            LOGGER.info(carDAO.getEntityById(2));
+            LOGGER.info(carDAO.getEntityById(1));
+            LOGGER.info(carDAO.getEntityById(3));
+        });
+        Thread thread2 = new Thread(() -> {
+            LOGGER.info(userDAO.getEntityById(1));
+            LOGGER.info(userDAO.getEntityById(3));
+            LOGGER.info(userDAO.getEntityById(50));
+        });
+        thread1.start();
+        thread2.start();
+    }
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -266,7 +282,6 @@ public class Main {
 //        LOGGER.info(u1.getId() + u1.getName() + u1.getSurname() + u1.getEmail());
 //        u.updateEntity(u1);
 //        u.removeEntity(u1);
-IWorkerDAO workerDAO = new WorkerDAO();
-workerDAO.showAll();
+        main.runPool();
     }
 }

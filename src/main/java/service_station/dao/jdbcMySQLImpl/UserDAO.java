@@ -3,6 +3,7 @@ package service_station.dao.jdbcMySQLImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import service_station.dao.IUserDAO;
+import service_station.dao.connectionPool.ConnectionPool;
 import service_station.models.User;
 
 import java.io.FileInputStream;
@@ -14,7 +15,8 @@ public class UserDAO implements IUserDAO {
     private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
     private static Properties p = new Properties();
     private User user = new User();
-    private Connection connection = null;
+    private ConnectionPool connectionPool = ConnectionPool.getInstance();
+    private Connection connection;
     private PreparedStatement pr = null;
     private ResultSet resultSet = null;
     private static String userName;
@@ -35,7 +37,7 @@ public class UserDAO implements IUserDAO {
     @Override
     public User getEntityById(int id) {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement("Select * From Users where id=?");
             pr.setInt(1, id);
             pr.execute();
@@ -51,7 +53,7 @@ public class UserDAO implements IUserDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (pr != null) pr.close();
                 if (resultSet != null) resultSet.close();
             } catch (SQLException e) {
@@ -64,7 +66,7 @@ public class UserDAO implements IUserDAO {
     @Override
     public void saveEntity(User entity) {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement("Insert into users (name,surname,email) Values (?,?,?)");
             pr.setString(1, entity.getName());
             pr.setString(2, entity.getSurname());
@@ -74,7 +76,7 @@ public class UserDAO implements IUserDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (pr != null) pr.close();
             } catch (SQLException e) {
                 LOGGER.info(e);
@@ -85,7 +87,7 @@ public class UserDAO implements IUserDAO {
     @Override
     public void updateEntity(User entity) {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement("Update users Set name=?,`surname`=?,`email`=? where id=?");
             pr.setString(1, entity.getName());
             pr.setString(2, entity.getSurname());
@@ -96,7 +98,7 @@ public class UserDAO implements IUserDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (pr != null) pr.close();
             } catch (SQLException e) {
                 LOGGER.info(e);
@@ -108,7 +110,7 @@ public class UserDAO implements IUserDAO {
     @Override
     public void removeEntity(User entity) {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement("Delete from users where id=?");
             pr.setInt(1, entity.getId());
             pr.execute();
@@ -116,7 +118,7 @@ public class UserDAO implements IUserDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (pr != null) pr.close();
             } catch (SQLException e) {
                 LOGGER.info(e);
@@ -127,7 +129,7 @@ public class UserDAO implements IUserDAO {
     @Override
     public void generateUsers(String name, String surname, String email, int quantity) {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement("Insert into users (name,surname,email) Values (?,?,?)");
             for (int i = 0; i < quantity; i++) {
                 pr.setString(1, name + "_" + i);
@@ -139,7 +141,7 @@ public class UserDAO implements IUserDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (pr != null) pr.close();
             } catch (SQLException e) {
                 LOGGER.info(e);
@@ -150,7 +152,7 @@ public class UserDAO implements IUserDAO {
     @Override
     public void showAll() {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement("Select * From Users");
             pr.execute();
             resultSet = pr.getResultSet();
@@ -166,7 +168,7 @@ public class UserDAO implements IUserDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (pr != null) pr.close();
                 if (resultSet != null) resultSet.close();
             } catch (SQLException e) {

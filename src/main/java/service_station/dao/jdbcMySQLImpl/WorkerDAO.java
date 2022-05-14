@@ -3,7 +3,7 @@ package service_station.dao.jdbcMySQLImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import service_station.dao.IWorkerDAO;
-import service_station.models.Order;
+import service_station.dao.connectionPool.ConnectionPool;
 import service_station.models.Worker;
 
 import java.io.FileInputStream;
@@ -15,7 +15,8 @@ public class WorkerDAO implements IWorkerDAO {
     private static final Logger LOGGER = LogManager.getLogger(WorkerDAO.class);
     private static Properties p = new Properties();
     private Worker worker = new Worker();
-    private Connection connection = null;
+    private ConnectionPool connectionPool = ConnectionPool.getInstance();
+    private Connection connection;
     private PreparedStatement pr = null;
     private ResultSet resultSet = null;
     private static String userName;
@@ -35,7 +36,7 @@ public class WorkerDAO implements IWorkerDAO {
     @Override
     public Worker getEntityById(int id) {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement("Select * from workers where id=?");
             pr.setInt(1, id);
             pr.execute();
@@ -50,7 +51,7 @@ public class WorkerDAO implements IWorkerDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (resultSet != null) resultSet.close();
                 if (pr != null) pr.close();
             } catch (SQLException e) {
@@ -63,7 +64,7 @@ public class WorkerDAO implements IWorkerDAO {
     @Override
     public void saveEntity(Worker entity) {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement
                     ("Insert into workers (position,experience,users_id) Values (?,?,?)");
             pr.setString(1, entity.getPosition());
@@ -74,7 +75,7 @@ public class WorkerDAO implements IWorkerDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (pr != null) pr.close();
             } catch (SQLException e) {
                 LOGGER.info(e);
@@ -85,7 +86,7 @@ public class WorkerDAO implements IWorkerDAO {
     @Override
     public void updateEntity(Worker entity) {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement
                     ("Update workers Set position=?,`experience`=?,users_id=? where id=?");
             pr.setString(1, entity.getPosition());
@@ -97,7 +98,7 @@ public class WorkerDAO implements IWorkerDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (pr != null) pr.close();
             } catch (SQLException e) {
                 LOGGER.info(e);
@@ -108,7 +109,7 @@ public class WorkerDAO implements IWorkerDAO {
     @Override
     public void removeEntity(Worker entity) {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement("Delete from workers where id=?");
             pr.setInt(1, entity.getId());
             pr.executeUpdate();
@@ -116,7 +117,7 @@ public class WorkerDAO implements IWorkerDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (pr != null) pr.close();
             } catch (SQLException e) {
                 LOGGER.info(e);
@@ -127,7 +128,7 @@ public class WorkerDAO implements IWorkerDAO {
     @Override
     public void showAll() {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement("Select * from workers");
             pr.execute();
             resultSet = pr.getResultSet();
@@ -142,7 +143,7 @@ public class WorkerDAO implements IWorkerDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (resultSet != null) resultSet.close();
                 if (pr != null) pr.close();
             } catch (SQLException e) {

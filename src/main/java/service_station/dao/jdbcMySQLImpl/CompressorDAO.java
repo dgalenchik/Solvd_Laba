@@ -3,6 +3,7 @@ package service_station.dao.jdbcMySQLImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import service_station.dao.ICompressorDAO;
+import service_station.dao.connectionPool.ConnectionPool;
 import service_station.models.Compressor;
 
 import java.io.FileInputStream;
@@ -14,7 +15,8 @@ public class CompressorDAO implements ICompressorDAO {
     private static final Logger LOGGER = LogManager.getLogger(CompressorDAO.class);
     private static Properties p = new Properties();
     private Compressor compressor = new Compressor();
-    private Connection connection = null;
+    private ConnectionPool connectionPool = ConnectionPool.getInstance();
+    private Connection connection;
     private PreparedStatement pr = null;
     private ResultSet resultSet = null;
     private static String userName;
@@ -35,7 +37,7 @@ public class CompressorDAO implements ICompressorDAO {
     @Override
     public Compressor getEntityById(int id) {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement("Select * from compressors where id=?");
             pr.setInt(1, id);
             pr.execute();
@@ -49,7 +51,7 @@ public class CompressorDAO implements ICompressorDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (resultSet != null) resultSet.close();
                 if (pr != null) pr.close();
             } catch (SQLException e) {
@@ -62,7 +64,7 @@ public class CompressorDAO implements ICompressorDAO {
     @Override
     public void saveEntity(Compressor entity) {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement
                     ("Insert into compressors (manufacture,perfomance) Values (?,?)");
             pr.setString(1, entity.getManufacture());
@@ -72,7 +74,7 @@ public class CompressorDAO implements ICompressorDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (pr != null) pr.close();
             } catch (SQLException e) {
                 LOGGER.info(e);
@@ -83,7 +85,7 @@ public class CompressorDAO implements ICompressorDAO {
     @Override
     public void updateEntity(Compressor entity) {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement
                     ("Update compressors Set manufacture=?,`perfomance`=? where id=?");
             pr.setString(1, entity.getManufacture());
@@ -94,7 +96,7 @@ public class CompressorDAO implements ICompressorDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (pr != null) pr.close();
             } catch (SQLException e) {
                 LOGGER.info(e);
@@ -105,7 +107,7 @@ public class CompressorDAO implements ICompressorDAO {
     @Override
     public void removeEntity(Compressor entity) {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement("Delete from compressors where id=?");
             pr.setInt(1, entity.getId());
             pr.executeUpdate();
@@ -113,7 +115,7 @@ public class CompressorDAO implements ICompressorDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (pr != null) pr.close();
             } catch (SQLException e) {
                 LOGGER.info(e);
@@ -124,7 +126,7 @@ public class CompressorDAO implements ICompressorDAO {
     @Override
     public void showAll() {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
+            connection = connectionPool.retrieve();
             pr = connection.prepareStatement("Select * from compressors");
             pr.execute();
             resultSet = pr.getResultSet();
@@ -138,7 +140,7 @@ public class CompressorDAO implements ICompressorDAO {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (resultSet != null) resultSet.close();
                 if (pr != null) pr.close();
             } catch (SQLException e) {
