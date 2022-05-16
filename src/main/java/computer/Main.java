@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import parsers.dom.DomParser;
 import service_station.dao.ICarDAO;
 import service_station.dao.IUserDAO;
 import service_station.dao.jdbcMySQLImpl.CarDAO;
@@ -282,6 +283,13 @@ public class Main {
 //        LOGGER.info(u1.getId() + u1.getName() + u1.getSurname() + u1.getEmail());
 //        u.updateEntity(u1);
 //        u.removeEntity(u1);
-        main.runPool();
+//        main.runPool();
+        DomParser domParser = new DomParser();
+        try {
+            domParser.parse();
+        } catch (Exception e) {
+            LOGGER.info(e);
+        }
+
     }
 }
