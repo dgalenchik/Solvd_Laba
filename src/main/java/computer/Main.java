@@ -5,17 +5,22 @@ import enums.MainCharacteristics;
 import enums.Manufactures;
 import exceptions.LogsQuantityException;
 import interfaces.functional.*;
+import jakarta.xml.bind.JAXBException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import parsers.dom.DomParser;
+import parsers.jaxb.JaxbRunner;
+import parsers.models.Equipment;
+import parsers.models.ServiceStation;
 import service_station.dao.ICarDAO;
 import service_station.dao.IUserDAO;
 import service_station.dao.jdbcMySQLImpl.CarDAO;
 import service_station.dao.jdbcMySQLImpl.UserDAO;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -290,6 +295,17 @@ public class Main {
         } catch (Exception e) {
             LOGGER.info(e);
         }
-
+        ServiceStation ss = domParser.takeServiceStation();
+JaxbRunner.marshal(ss);
+        ServiceStation ssn = new ServiceStation();
+        try {
+             ssn = JaxbRunner.unmarhall();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        LOGGER.info(ssn);
+        LOGGER.info(ssn.equals(ss));
     }
 }

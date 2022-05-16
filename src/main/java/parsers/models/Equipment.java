@@ -1,15 +1,20 @@
 package parsers.models;
 
+import jakarta.xml.bind.annotation.XmlElement;
+
+import java.util.List;
+import java.util.Objects;
+
 public class Equipment {
-    private Compressor compressor;
+    private List<Compressor> compressors;
     private Cutter cutter;
 
-    public Compressor getCompressor() {
-        return compressor;
+    public List<Compressor> getCompressors() {
+        return compressors;
     }
-
-    public void setCompressor(Compressor compressor) {
-        this.compressor = compressor;
+@XmlElement(name= "compressor")
+    public void setCompressors(List<Compressor> compressors) {
+        this.compressors = compressors;
     }
 
     public Cutter getCutter() {
@@ -23,8 +28,21 @@ public class Equipment {
     @Override
     public String toString() {
         return "Equipment{" +
-                "compressor=" + compressor +
+                "compressors=" + compressors +
                 ", cutter=" + cutter +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Equipment)) return false;
+        Equipment equipment = (Equipment) o;
+        return Objects.equals(compressors, equipment.compressors) && Objects.equals(cutter, equipment.cutter);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(compressors, cutter);
     }
 }

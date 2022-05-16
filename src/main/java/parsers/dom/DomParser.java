@@ -8,7 +8,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import parsers.models.*;
-import service_station.dao.jdbcMySQLImpl.UserDAO;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,14 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DomParser {
-    private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
-    Compressor compressor = new Compressor();
+    private static final Logger LOGGER = LogManager.getLogger(DomParser.class);
     Cutter cutter = new Cutter();
     Engeneer engeneer = new Engeneer();
     Equipment equipment = new Equipment();
     ServiceStation serviceStation = new ServiceStation();
     Worker worker = new Worker();
     List<Worker> workersList = new ArrayList<>();
+    List<Compressor> compressors = new ArrayList<>();
     List<Equipment> eqipmentList = new ArrayList<>();
 
     public void parse() throws ParserConfigurationException, IOException, SAXException, ParseException {
@@ -47,12 +46,14 @@ public class DomParser {
         Element element1 = (Element) engeneerNode;
         engeneer.setName(element1.getElementsByTagName("name").item(0).getTextContent());
         engeneer.setSurname(element1.getElementsByTagName("surname").item(0).getTextContent());
-        SimpleDateFormat sdf = new SimpleDateFormat("DD/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
         engeneer.setBirthday(sdf.parse(element1.getElementsByTagName("birthday").item(0).getTextContent()));
         worker.setEngeneer(engeneer);
         workersList.add(worker);
         serviceStation.setWorkers(workersList);
         nodeList = doc.getElementsByTagName("compressor");
+
+
         for (int i = 0; i < nodeList.getLength(); i++) {
             Compressor compressor = new Compressor();
             Node node = nodeList.item(i);
@@ -60,17 +61,26 @@ public class DomParser {
             compressor.setManufacture(el.getElementsByTagName("manufacture").item(0).getTextContent());
             compressor.setPerformance(Integer.parseInt(el.getElementsByTagName("performance").item(0).getTextContent()));
             compressor.setYear(Integer.parseInt(el.getElementsByTagName("year").item(0).getTextContent()));
-            equipment.setCompressor(compressor);
-            eqipmentList.add(equipment);
-            serviceStation.setEquipment(eqipmentList);
+            compressors.add(compressor);
+            equipment.setCutter(cutter);
+            equipment.setCompressors(compressors);
+
         }
-        nodeList = doc.getElementsByTagName("cutter");
-        Node cutterNode = nodeList.item(0);
-        Element element2 = (Element) cutterNode;
-        cutter.setManufacture(element2.getElementsByTagName("manufacture").item(0).getTextContent());
-        cutter.setSteelHardness(Integer.parseInt(element2.getElementsByTagName("steel_hardness").item(0).getTextContent()));
-        equipment.setCutter(cutter);
+        NodeList cutterList = doc.getElementsByTagName("cutter");
+        Node cutterNode = cutterList.item(0);
+        Element cutterElement = (Element) cutterNode;
+        cutter.setManufacture(cutterElement.getElementsByTagName("manufacture").item(0).getTextContent());
+        cutter.setSteelHardness(Integer.parseInt(cutterElement.getElementsByTagName("steel_hardness").item(0).getTextContent()));
+
+
+        eqipmentList.add(equipment);
+        serviceStation.setEquipment(eqipmentList);
+
         LOGGER.info(serviceStation);
+    }
+
+    public ServiceStation takeServiceStation() {
+        return serviceStation;
     }
 
 }

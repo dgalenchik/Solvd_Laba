@@ -1,5 +1,7 @@
 package parsers.models;
 
+import java.util.Objects;
+
 public class Compressor {
     private String manufacture;
     private int performance;
@@ -36,5 +38,18 @@ public class Compressor {
                 ", performance=" + performance +
                 ", year=" + year +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Compressor)) return false;
+        Compressor that = (Compressor) o;
+        return performance == that.performance && year == that.year && Objects.equals(manufacture, that.manufacture);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(manufacture, performance, year);
     }
 }

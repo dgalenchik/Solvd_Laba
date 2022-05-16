@@ -1,11 +1,20 @@
 package parsers.models;
 
-import java.util.Date;
+import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import parsers.jaxb.DateConverter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Objects;
+@XmlType(propOrder = {"name","surname","birthday"})
 public class Engeneer {
+    private static final SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
     private String name;
     private String surname;
     private Date birthday;
+
 
     public String getName() {
         return name;
@@ -27,6 +36,7 @@ public class Engeneer {
         return birthday;
     }
 
+    @XmlJavaTypeAdapter(DateConverter.class)
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
@@ -36,7 +46,20 @@ public class Engeneer {
         return "Engeneer{" +
                 "name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", birthday=" + birthday +
+                ", birthday=" + formatter.format(birthday) +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Engeneer)) return false;
+        Engeneer engeneer = (Engeneer) o;
+        return Objects.equals(name, engeneer.name) && Objects.equals(surname, engeneer.surname) && Objects.equals(birthday, engeneer.birthday);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, surname, birthday);
     }
 }

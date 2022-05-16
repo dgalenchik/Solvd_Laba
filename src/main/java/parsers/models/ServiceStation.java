@@ -1,8 +1,16 @@
 package parsers.models;
 
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+@XmlRootElement(name = "service_station")
+@XmlType(propOrder = {"id", "name", "address", "workers", "equipment"})
 public class ServiceStation {
     private int id;
     private String name;
@@ -25,6 +33,7 @@ public class ServiceStation {
         return id;
     }
 
+    @XmlAttribute
     public void setId(int id) {
         this.id = id;
     }
@@ -33,6 +42,7 @@ public class ServiceStation {
         return name;
     }
 
+    @XmlElement
     public void setName(String name) {
         this.name = name;
     }
@@ -41,6 +51,7 @@ public class ServiceStation {
         return address;
     }
 
+    @XmlElement
     public void setAddress(String address) {
         this.address = address;
     }
@@ -49,6 +60,7 @@ public class ServiceStation {
         return workers;
     }
 
+    @XmlElement
     public void setWorkers(List<Worker> workers) {
         this.workers = workers;
     }
@@ -57,8 +69,21 @@ public class ServiceStation {
         return equipment;
     }
 
+    @XmlElement
     public void setEquipment(List<Equipment> equipment) {
         this.equipment = equipment;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ServiceStation)) return false;
+        ServiceStation that = (ServiceStation) o;
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(address, that.address) && Objects.equals(workers, that.workers) && Objects.equals(equipment, that.equipment);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, address, workers, equipment);
+    }
 }

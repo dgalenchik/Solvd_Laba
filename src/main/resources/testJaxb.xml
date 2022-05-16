@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<service_station id="1">
+    <name>Junkers</name>
+    <address>Victory's str, 115</address>
+    <workers>
+        <engeneer>
+            <name>Victor</name>
+            <surname>Suvorov</surname>
+            <birthday>14/08/1987</birthday>
+        </engeneer>
+    </workers>
+    <equipment>
+        <compressor>
+            <manufacture>Eco</manufacture>
+            <performance>2050</performance>
+            <year>2017</year>
+        </compressor>
+        <compressor>
+            <manufacture>Jiaxipiera</manufacture>
+            <performance>8100</performance>
+            <year>2022</year>
+        </compressor>
+        <cutter>
+            <manufacture>Monroe</manufacture>
+            <steelHardness>2800</steelHardness>
+        </cutter>
+    </equipment>
+</service_station>
