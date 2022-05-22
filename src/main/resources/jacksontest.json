@@ -1,0 +1,27 @@
+[ {
+  "id" : 1,
+  "name" : "Junkers",
+  "address" : "Victory's str, 115",
+  "workers" : [ {
+    "engeneer" : {
+      "name" : "Victor",
+      "surname" : "Suvorov",
+      "birthday" : "13/08/1987"
+    }
+  } ],
+  "equipment" : [ {
+    "compressors" : [ {
+      "manufacture" : "Eco",
+      "performance" : 2050,
+      "year" : 2017
+    }, {
+      "manufacture" : "Jiaxipiera",
+      "performance" : 8100,
+      "year" : 2022
+    } ],
+    "cutter" : {
+      "manufacture" : "Monroe",
+      "steelHardness" : 2800
+    }
+  } ]
+} ]

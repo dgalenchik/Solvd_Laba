@@ -11,8 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import parsers.dom.DomParser;
+import parsers.jackson.JacksonRunner;
 import parsers.jaxb.JaxbRunner;
-import parsers.models.Equipment;
 import parsers.models.ServiceStation;
 import service_station.dao.ICarDAO;
 import service_station.dao.IUserDAO;
@@ -296,16 +296,18 @@ public class Main {
             LOGGER.info(e);
         }
         ServiceStation ss = domParser.takeServiceStation();
-JaxbRunner.marshal(ss);
+        JaxbRunner.marshal(ss);
         ServiceStation ssn = new ServiceStation();
         try {
-             ssn = JaxbRunner.unmarhall();
+            ssn = JaxbRunner.unmarhall();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.info(e);
         } catch (JAXBException e) {
-            e.printStackTrace();
+            LOGGER.info(e);
         }
-        LOGGER.info(ssn);
-        LOGGER.info(ssn.equals(ss));
+//        LOGGER.info(ssn);
+//        LOGGER.info(ssn.equals(ss));
+        JacksonRunner.serialize(ss);
+        JacksonRunner.deserialize();
     }
 }

@@ -1,18 +1,22 @@
 package parsers.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.xml.bind.annotation.XmlType;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import parsers.jaxb.DateConverter;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
-@XmlType(propOrder = {"name","surname","birthday"})
+
+@XmlType(propOrder = {"name", "surname", "birthday"})
 public class Engeneer {
     private static final SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
     private String name;
     private String surname;
+    @JsonProperty
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/mm/yyyy")
     private Date birthday;
 
 

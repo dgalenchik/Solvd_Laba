@@ -1,8 +1,11 @@
 package parsers.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Worker {
+    @JsonProperty
     private Engeneer engeneer;
 
     public Engeneer getEngeneer() {

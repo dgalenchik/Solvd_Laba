@@ -1,5 +1,7 @@
 package parsers.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -11,11 +13,17 @@ import java.util.Objects;
 
 @XmlRootElement(name = "service_station")
 @XmlType(propOrder = {"id", "name", "address", "workers", "equipment"})
+@JsonPropertyOrder({"id", "name", "address", "workers", "equipment"})
 public class ServiceStation {
+    @JsonProperty
     private int id;
+    @JsonProperty
     private String name;
+    @JsonProperty
     private String address;
+    @JsonProperty
     private List<Worker> workers = new ArrayList<>();
+    @JsonProperty
     private List<Equipment> equipment = new ArrayList<>();
 
     @Override
@@ -27,6 +35,9 @@ public class ServiceStation {
                 ", workers=" + workers +
                 ", equipment=" + equipment +
                 '}';
+    }
+
+    public ServiceStation() {
     }
 
     public int getId() {

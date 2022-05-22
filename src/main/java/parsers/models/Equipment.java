@@ -12,7 +12,8 @@ public class Equipment {
     public List<Compressor> getCompressors() {
         return compressors;
     }
-@XmlElement(name= "compressor")
+
+    @XmlElement(name = "compressor")
     public void setCompressors(List<Compressor> compressors) {
         this.compressors = compressors;
     }
