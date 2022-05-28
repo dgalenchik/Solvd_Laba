@@ -7,7 +7,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.Objects;
 import java.util.Scanner;
 
-public record Authorization(String userName, String password) {
+public class Authorization{
+    String userName;
+    String password;
     public static String rootUsername = "root";
     public static String rootPassword = "root";
     public static final String MESSAGE;
@@ -26,6 +28,19 @@ public record Authorization(String userName, String password) {
             rootPassword = in.next();
         }
 
+    }
+
+    public Authorization(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     @Override

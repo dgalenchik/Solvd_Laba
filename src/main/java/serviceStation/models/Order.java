@@ -1,4 +1,4 @@
-package service_station.models;
+package serviceStation.models;
 
 public class Order {
     private int id;

@@ -1,10 +1,10 @@
-package service_station.dao.jdbcMySQLImpl;
+package serviceStation.dao.jdbcMySQLImpl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import service_station.dao.IUserDAO;
-import service_station.dao.connectionPool.ConnectionPool;
-import service_station.models.User;
+import serviceStation.dao.IUserDAO;
+import serviceStation.dao.connectionPool.ConnectionPool;
+import serviceStation.models.User;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,20 +19,6 @@ public class UserDAO implements IUserDAO {
     private Connection connection;
     private PreparedStatement pr = null;
     private ResultSet resultSet = null;
-    private static String userName;
-    private static String url;
-    private static String password;
-
-    static {
-        try (FileInputStream f = new FileInputStream("src/main/resources/db.properties")) {
-            p.load(f);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        url = p.getProperty("db.url");
-        userName = p.getProperty("db.username");
-        password = p.getProperty("db.password");
-    }
 
     @Override
     public User getEntityById(int id) {

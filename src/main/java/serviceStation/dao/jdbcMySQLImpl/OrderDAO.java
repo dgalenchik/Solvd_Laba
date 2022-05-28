@@ -1,51 +1,40 @@
-package service_station.dao.jdbcMySQLImpl;
+package serviceStation.dao.jdbcMySQLImpl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import service_station.dao.ICarDAO;
-import service_station.dao.connectionPool.ConnectionPool;
-import service_station.models.Car;
+import serviceStation.dao.IOrderDAO;
+import serviceStation.dao.connectionPool.ConnectionPool;
+import serviceStation.models.Order;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
-public class CarDAO implements ICarDAO{
-    private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
+public class OrderDAO implements IOrderDAO {
+    private static final Logger LOGGER = LogManager.getLogger(OrderDAO.class);
     private static Properties p = new Properties();
-    private Car car = new Car();
+    private Order order = new Order();
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
     private Connection connection;
     private PreparedStatement pr = null;
     private ResultSet resultSet = null;
-    private static String userName;
-    private static String url;
-    private static String password;
-
-    static {
-        try (FileInputStream f = new FileInputStream("src/main/resources/db.properties")) {
-            p.load(f);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        url = p.getProperty("db.url");
-        userName = p.getProperty("db.username");
-        password = p.getProperty("db.password");
-    }
 
     @Override
-    public Car getEntityById(int id) {
+    public Order getEntityById(int id) {
         try {
             connection = connectionPool.retrieve();
-            pr = connection.prepareStatement("Select * from cars where id=?");
+            pr = connection.prepareStatement("Select * from orders where id=?");
             pr.setInt(1, id);
             pr.execute();
             resultSet = pr.getResultSet();
             while (resultSet.next()) {
-                car.setId(resultSet.getInt("id"));
-                car.setManufacture(resultSet.getString("manufacture"));
-                car.setYear(resultSet.getInt("year"));
+                order.setId(resultSet.getInt("id"));
+                order.setName(resultSet.getString("name"));
+                order.setPrice(resultSet.getInt("price"));
+                order.setWorkers_id(resultSet.getInt("workers_id"));
+                order.setClients_id(resultSet.getInt("clients_id"));
+                order.setCars_id(resultSet.getInt("cars_id"));
             }
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -58,15 +47,20 @@ public class CarDAO implements ICarDAO{
                 LOGGER.info(e);
             }
         }
-        return car;
+        return order;
     }
+
     @Override
-    public void saveEntity(Car entity) {
+    public void saveEntity(Order entity) {
         try {
             connection = connectionPool.retrieve();
-            pr = connection.prepareStatement("Insert into cars (manufacture,year) Values (?,?)");
-            pr.setString(1, entity.getManufacture());
-            pr.setInt(2, entity.getYear());
+            pr = connection.prepareStatement
+                    ("Insert into orders (name,price,workers_id,clients_id,cars_id) Values (?,?,?,?,?)");
+            pr.setString(1, entity.getName());
+            pr.setInt(2, entity.getPrice());
+            pr.setInt(3, entity.getWorkers_id());
+            pr.setInt(4, entity.getClients_id());
+            pr.setInt(5, entity.getCars_id());
             pr.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -81,13 +75,17 @@ public class CarDAO implements ICarDAO{
     }
 
     @Override
-    public void updateEntity (Car entity) {
+    public void updateEntity(Order entity) {
         try {
             connection = connectionPool.retrieve();
-            pr = connection.prepareStatement("Update cars Set manufacture=?,`year`=? where id=?");
-            pr.setString(1, entity.getManufacture());
-            pr.setInt(2, entity.getYear());
-            pr.setInt(3, entity.getId());
+            pr = connection.prepareStatement
+                    ("Update orders Set name=?,`price`=?,workers_id=?,clients_id=?,cars_id=? where id=?");
+            pr.setString(1, entity.getName());
+            pr.setInt(2, entity.getPrice());
+            pr.setInt(3, entity.getWorkers_id());
+            pr.setInt(4, entity.getClients_id());
+            pr.setInt(5, entity.getCars_id());
+            pr.setInt(6, entity.getId());
             pr.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -102,10 +100,10 @@ public class CarDAO implements ICarDAO{
     }
 
     @Override
-    public void removeEntity(Car entity) {
+    public void removeEntity(Order entity) {
         try {
             connection = connectionPool.retrieve();
-            pr = connection.prepareStatement("Delete from cars where id=?");
+            pr = connection.prepareStatement("Delete from orders where id=?");
             pr.setInt(1, entity.getId());
             pr.executeUpdate();
         } catch (SQLException e) {
@@ -123,21 +121,24 @@ public class CarDAO implements ICarDAO{
     @Override
     public void showAll() {
         try {
-            connection = DriverManager.getConnection(url, userName, password);
-            pr = connection.prepareStatement("Select * from cars");
+            connection = connectionPool.retrieve();
+            pr = connection.prepareStatement("Select * from orders");
             pr.execute();
             resultSet = pr.getResultSet();
             while (resultSet.next()) {
-                car.setId(resultSet.getInt("id"));
-                car.setManufacture(resultSet.getString("manufacture"));
-                car.setYear(resultSet.getInt("year"));
-                LOGGER.info(car);
+                order.setId(resultSet.getInt("id"));
+                order.setName(resultSet.getString("name"));
+                order.setPrice(resultSet.getInt("price"));
+                order.setWorkers_id(resultSet.getInt("workers_id"));
+                order.setClients_id(resultSet.getInt("clients_id"));
+                order.setCars_id(resultSet.getInt("cars_id"));
+                LOGGER.info(order);
             }
         } catch (SQLException e) {
             LOGGER.info(e);
         } finally {
             try {
-                if (connection != null) connection.close();
+                if (connection != null) connectionPool.putback(connection);
                 if (resultSet != null) resultSet.close();
                 if (pr != null) pr.close();
             } catch (SQLException e) {
@@ -146,3 +147,4 @@ public class CarDAO implements ICarDAO{
         }
     }
 }
+

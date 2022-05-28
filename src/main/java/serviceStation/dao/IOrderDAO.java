@@ -1,6 +1,6 @@
-package service_station.dao;
+package serviceStation.dao;
 
-import service_station.models.Order;
+import serviceStation.models.Order;
 
 public interface IOrderDAO extends IBaseDAO<Order> {
     void showAll();

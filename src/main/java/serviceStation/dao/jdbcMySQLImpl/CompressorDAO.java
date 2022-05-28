@@ -1,54 +1,37 @@
-package service_station.dao.jdbcMySQLImpl;
+package serviceStation.dao.jdbcMySQLImpl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import service_station.dao.IOrderDAO;
-import service_station.dao.connectionPool.ConnectionPool;
-import service_station.models.Order;
+import serviceStation.dao.ICompressorDAO;
+import serviceStation.dao.connectionPool.ConnectionPool;
+import serviceStation.models.Compressor;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
-public class OrderDAO implements IOrderDAO {
-    private static final Logger LOGGER = LogManager.getLogger(OrderDAO.class);
+public class CompressorDAO implements ICompressorDAO {
+    private static final Logger LOGGER = LogManager.getLogger(CompressorDAO.class);
     private static Properties p = new Properties();
-    private Order order = new Order();
+    private Compressor compressor = new Compressor();
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
     private Connection connection;
     private PreparedStatement pr = null;
     private ResultSet resultSet = null;
-    private static String userName;
-    private static String url;
-    private static String password;
-
-    static {
-        try (FileInputStream f = new FileInputStream("src/main/resources/db.properties")) {
-            p.load(f);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        url = p.getProperty("db.url");
-        userName = p.getProperty("db.username");
-        password = p.getProperty("db.password");
-    }
 
     @Override
-    public Order getEntityById(int id) {
+    public Compressor getEntityById(int id) {
         try {
             connection = connectionPool.retrieve();
-            pr = connection.prepareStatement("Select * from orders where id=?");
+            pr = connection.prepareStatement("Select * from compressors where id=?");
             pr.setInt(1, id);
             pr.execute();
             resultSet = pr.getResultSet();
             while (resultSet.next()) {
-                order.setId(resultSet.getInt("id"));
-                order.setName(resultSet.getString("name"));
-                order.setPrice(resultSet.getInt("price"));
-                order.setWorkers_id(resultSet.getInt("workers_id"));
-                order.setClients_id(resultSet.getInt("clients_id"));
-                order.setCars_id(resultSet.getInt("cars_id"));
+                compressor.setId(resultSet.getInt("id"));
+                compressor.setManufacture(resultSet.getString("manufacture"));
+                compressor.setPerformance(resultSet.getInt("perfomance"));
             }
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -61,20 +44,17 @@ public class OrderDAO implements IOrderDAO {
                 LOGGER.info(e);
             }
         }
-        return order;
+        return compressor;
     }
 
     @Override
-    public void saveEntity(Order entity) {
+    public void saveEntity(Compressor entity) {
         try {
             connection = connectionPool.retrieve();
             pr = connection.prepareStatement
-                    ("Insert into orders (name,price,workers_id,clients_id,cars_id) Values (?,?,?,?,?)");
-            pr.setString(1, entity.getName());
-            pr.setInt(2, entity.getPrice());
-            pr.setInt(3, entity.getWorkers_id());
-            pr.setInt(4, entity.getClients_id());
-            pr.setInt(5, entity.getCars_id());
+                    ("Insert into compressors (manufacture,perfomance) Values (?,?)");
+            pr.setString(1, entity.getManufacture());
+            pr.setInt(2, entity.getPerformance());
             pr.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -89,17 +69,14 @@ public class OrderDAO implements IOrderDAO {
     }
 
     @Override
-    public void updateEntity(Order entity) {
+    public void updateEntity(Compressor entity) {
         try {
             connection = connectionPool.retrieve();
             pr = connection.prepareStatement
-                    ("Update orders Set name=?,`price`=?,workers_id=?,clients_id=?,cars_id=? where id=?");
-            pr.setString(1, entity.getName());
-            pr.setInt(2, entity.getPrice());
-            pr.setInt(3, entity.getWorkers_id());
-            pr.setInt(4, entity.getClients_id());
-            pr.setInt(5, entity.getCars_id());
-            pr.setInt(6, entity.getId());
+                    ("Update compressors Set manufacture=?,`perfomance`=? where id=?");
+            pr.setString(1, entity.getManufacture());
+            pr.setInt(2, entity.getPerformance());
+            pr.setInt(3,entity.getId());
             pr.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -114,10 +91,10 @@ public class OrderDAO implements IOrderDAO {
     }
 
     @Override
-    public void removeEntity(Order entity) {
+    public void removeEntity(Compressor entity) {
         try {
             connection = connectionPool.retrieve();
-            pr = connection.prepareStatement("Delete from orders where id=?");
+            pr = connection.prepareStatement("Delete from compressors where id=?");
             pr.setInt(1, entity.getId());
             pr.executeUpdate();
         } catch (SQLException e) {
@@ -136,17 +113,14 @@ public class OrderDAO implements IOrderDAO {
     public void showAll() {
         try {
             connection = connectionPool.retrieve();
-            pr = connection.prepareStatement("Select * from orders");
+            pr = connection.prepareStatement("Select * from compressors");
             pr.execute();
             resultSet = pr.getResultSet();
             while (resultSet.next()) {
-                order.setId(resultSet.getInt("id"));
-                order.setName(resultSet.getString("name"));
-                order.setPrice(resultSet.getInt("price"));
-                order.setWorkers_id(resultSet.getInt("workers_id"));
-                order.setClients_id(resultSet.getInt("clients_id"));
-                order.setCars_id(resultSet.getInt("cars_id"));
-                LOGGER.info(order);
+                compressor.setId(resultSet.getInt("id"));
+                compressor.setManufacture(resultSet.getString("manufacture"));
+                compressor.setPerformance(resultSet.getInt("perfomance"));
+                LOGGER.info(compressor);
             }
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -158,7 +132,7 @@ public class OrderDAO implements IOrderDAO {
             } catch (SQLException e) {
                 LOGGER.info(e);
             }
-        }
+    }
     }
 }
 

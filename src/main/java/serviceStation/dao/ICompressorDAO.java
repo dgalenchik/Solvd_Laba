@@ -1,6 +1,6 @@
-package service_station.dao;
+package serviceStation.dao;
 
-import service_station.models.Compressor;
+import serviceStation.models.Compressor;
 
 public interface ICompressorDAO extends IBaseDAO<Compressor> {
     void showAll();

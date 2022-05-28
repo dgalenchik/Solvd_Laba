@@ -1,4 +1,4 @@
-package service_station.dao;
+package serviceStation.dao;
 
 public interface IBaseDAO <T>{
     T getEntityById(int id);

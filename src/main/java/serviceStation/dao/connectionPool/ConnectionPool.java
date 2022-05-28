@@ -1,4 +1,4 @@
-package service_station.dao.connectionPool;
+package serviceStation.dao.connectionPool;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,7 +45,7 @@ public class ConnectionPool {
         try (FileInputStream f = new FileInputStream("src/main/resources/db.properties")) {
             p.load(f);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info(e);
         }
         url = p.getProperty("db.url");
         userName = p.getProperty("db.username");
@@ -57,7 +57,7 @@ public class ConnectionPool {
         try {
             conn = DriverManager.getConnection(url, userName, password);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.info(e);
         }
         return conn;
     }

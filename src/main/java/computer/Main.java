@@ -14,10 +14,10 @@ import parsers.dom.DomParser;
 import parsers.jackson.JacksonRunner;
 import parsers.jaxb.JaxbRunner;
 import parsers.models.ServiceStation;
-import service_station.dao.ICarDAO;
-import service_station.dao.IUserDAO;
-import service_station.dao.jdbcMySQLImpl.CarDAO;
-import service_station.dao.jdbcMySQLImpl.UserDAO;
+import serviceStation.dao.ICarDAO;
+import serviceStation.dao.IUserDAO;
+import serviceStation.dao.jdbcMySQLImpl.CarDAO;
+import serviceStation.dao.jdbcMySQLImpl.UserDAO;
 
 import java.io.File;
 import java.io.FileNotFoundException;

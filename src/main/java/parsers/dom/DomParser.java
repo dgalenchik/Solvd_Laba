@@ -21,14 +21,78 @@ import java.util.List;
 
 public class DomParser {
     private static final Logger LOGGER = LogManager.getLogger(DomParser.class);
-    Cutter cutter = new Cutter();
-    Engeneer engeneer = new Engeneer();
-    Equipment equipment = new Equipment();
-    ServiceStation serviceStation = new ServiceStation();
-    Worker worker = new Worker();
-    List<Worker> workersList = new ArrayList<>();
-    List<Compressor> compressors = new ArrayList<>();
-    List<Equipment> eqipmentList = new ArrayList<>();
+    private Cutter cutter = new Cutter();
+    private Engeneer engeneer = new Engeneer();
+    private Equipment equipment = new Equipment();
+    private ServiceStation serviceStation = new ServiceStation();
+    private Worker worker = new Worker();
+    private List<Worker> workersList = new ArrayList<>();
+    private List<Compressor> compressors = new ArrayList<>();
+    private List<Equipment> eqipmentList = new ArrayList<>();
+
+    public Cutter getCutter() {
+        return cutter;
+    }
+
+    public void setCutter(Cutter cutter) {
+        this.cutter = cutter;
+    }
+
+    public Engeneer getEngeneer() {
+        return engeneer;
+    }
+
+    public void setEngeneer(Engeneer engeneer) {
+        this.engeneer = engeneer;
+    }
+
+    public Equipment getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
+    }
+
+    public ServiceStation getServiceStation() {
+        return serviceStation;
+    }
+
+    public void setServiceStation(ServiceStation serviceStation) {
+        this.serviceStation = serviceStation;
+    }
+
+    public Worker getWorker() {
+        return worker;
+    }
+
+    public void setWorker(Worker worker) {
+        this.worker = worker;
+    }
+
+    public List<Worker> getWorkersList() {
+        return workersList;
+    }
+
+    public void setWorkersList(List<Worker> workersList) {
+        this.workersList = workersList;
+    }
+
+    public List<Compressor> getCompressors() {
+        return compressors;
+    }
+
+    public void setCompressors(List<Compressor> compressors) {
+        this.compressors = compressors;
+    }
+
+    public List<Equipment> getEqipmentList() {
+        return eqipmentList;
+    }
+
+    public void setEqipmentList(List<Equipment> eqipmentList) {
+        this.eqipmentList = eqipmentList;
+    }
 
     public void parse() throws ParserConfigurationException, IOException, SAXException, ParseException {
         File xmlFile = new File(System.getProperty("user.dir") + "/src/main/resources/test.xml");

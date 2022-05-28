@@ -1,6 +1,6 @@
-package service_station.dao;
+package serviceStation.dao;
 
-import service_station.models.Worker;
+import serviceStation.models.Worker;
 
 public interface IWorkerDAO extends IBaseDAO<Worker> {
 void showAll();

@@ -3,11 +3,9 @@ package parsers.jaxb;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
-import jakarta.xml.bind.Unmarshaller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import parsers.models.ServiceStation;
-import service_station.dao.jdbcMySQLImpl.UserDAO;
 
 import java.io.File;
 import java.io.FileNotFoundException;
