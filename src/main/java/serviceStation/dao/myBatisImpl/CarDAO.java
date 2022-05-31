@@ -69,7 +69,6 @@ public class CarDAO implements ICarDAO {
         } finally {
             sqlSession.close();
         }
-        sqlSession.close();
     }
 
 

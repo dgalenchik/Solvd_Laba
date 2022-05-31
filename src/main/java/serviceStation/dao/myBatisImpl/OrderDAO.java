@@ -68,7 +68,6 @@ public class OrderDAO implements IOrderDAO {
         } finally {
             sqlSession.close();
         }
-        sqlSession.close();
     }
 
     @Override

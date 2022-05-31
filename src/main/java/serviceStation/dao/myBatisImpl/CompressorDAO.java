@@ -69,7 +69,6 @@ public class CompressorDAO implements ICompressorDAO {
         } finally {
             sqlSession.close();
         }
-        sqlSession.close();
     }
 
 

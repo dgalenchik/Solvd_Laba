@@ -68,7 +68,6 @@ public class WorkerDAO implements IWorkerDAO {
         } finally {
             sqlSession.close();
         }
-        sqlSession.close();
     }
 
     @Override

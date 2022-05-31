@@ -69,7 +69,6 @@ public class UserDAO implements IUserDAO {
         } finally {
             sqlSession.close();
         }
-        sqlSession.close();
     }
 
 
