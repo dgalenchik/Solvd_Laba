@@ -6,16 +6,17 @@ import serviceStation.dao.IUserDAO;
 import serviceStation.dao.connectionPool.ConnectionPool;
 import serviceStation.models.User;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class UserDAO implements IUserDAO {
     private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
-    private static Properties p = new Properties();
-    private User user = new User();
-    private ConnectionPool connectionPool = ConnectionPool.getInstance();
+    private static final Properties p = new Properties();
+    private final User user = new User();
+    private final ConnectionPool connectionPool = ConnectionPool.getInstance();
     private Connection connection;
     private PreparedStatement pr = null;
     private ResultSet resultSet = null;

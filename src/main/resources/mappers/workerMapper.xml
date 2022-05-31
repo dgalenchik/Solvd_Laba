@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="serviceStation.dao.IWorkerDAO">
+    <resultMap id="result" autoMapping="false" type="serviceStation.models.Worker">
+        <result property="id" column="id"/>
+        <result property="position" column="position"/>
+        <result property="experience" column="experience"/>
+        <result property="users_id" column="users_id"/>
+    </resultMap>
+    <select id="getEntityById" parameterType="Integer" resultMap="result">
+        select * from workers where id = #{id}
+    </select>
+    <insert id="saveWorker" parameterType="serviceStation.models.Worker" useGeneratedKeys="true" keyProperty="id"
+            timeout="20">
+        insert into workers (id,position,experience,users_id)
+        values (#{id},#{position},#{experience},#{users_id})
+    </insert>
+    <update id="updateWorker" parameterType="serviceStation.models.Worker">
+        update workers set
+        position = #{position},
+        experience = #{experience},
+        users_id = #{users_id}
+        where id = #{id}
+    </update>
+    <delete id="removeWorker">
+        delete from workers where id = #{id}
+    </delete>
+    <select id="showAllWorkers" resultMap="result">select * from workers</select>
+</mapper>

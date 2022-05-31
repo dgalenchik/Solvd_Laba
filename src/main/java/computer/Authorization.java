@@ -7,11 +7,11 @@ import org.apache.logging.log4j.Logger;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Authorization{
-    String userName;
-    String password;
-    public static String rootUsername = "root";
-    public static String rootPassword = "root";
+public class Authorization {
+    private final String userName;
+    private final String password;
+    private static String rootUsername = "root";
+    private static String rootPassword = "root";
     public static final String MESSAGE;
     private static final Logger LOGGER = LogManager.getLogger(Authorization.class);
 

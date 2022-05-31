@@ -6,16 +6,17 @@ import serviceStation.dao.ICompressorDAO;
 import serviceStation.dao.connectionPool.ConnectionPool;
 import serviceStation.models.Compressor;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class CompressorDAO implements ICompressorDAO {
     private static final Logger LOGGER = LogManager.getLogger(CompressorDAO.class);
-    private static Properties p = new Properties();
-    private Compressor compressor = new Compressor();
-    private ConnectionPool connectionPool = ConnectionPool.getInstance();
+    private static final Properties p = new Properties();
+    private final Compressor compressor = new Compressor();
+    private final ConnectionPool connectionPool = ConnectionPool.getInstance();
     private Connection connection;
     private PreparedStatement pr = null;
     private ResultSet resultSet = null;
@@ -76,7 +77,7 @@ public class CompressorDAO implements ICompressorDAO {
                     ("Update compressors Set manufacture=?,`perfomance`=? where id=?");
             pr.setString(1, entity.getManufacture());
             pr.setInt(2, entity.getPerformance());
-            pr.setInt(3,entity.getId());
+            pr.setInt(3, entity.getId());
             pr.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -132,7 +133,7 @@ public class CompressorDAO implements ICompressorDAO {
             } catch (SQLException e) {
                 LOGGER.info(e);
             }
-    }
+        }
     }
 }
 

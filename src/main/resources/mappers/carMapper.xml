@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="serviceStation.dao.ICarDAO">
+    <resultMap id="result" autoMapping="false" type="serviceStation.models.Car">
+        <result property="id" column="id"/>
+        <result property="manufacture" column="manufacture"/>
+        <result property="year" column="year"/>
+    </resultMap>
+    <select id="getEntityById" parameterType="Integer" resultMap="result">
+        select * from cars where id = #{id}
+    </select>
+    <insert id="saveEntity" parameterType="serviceStation.models.Car" useGeneratedKeys="true" keyProperty="id"
+            timeout="20">
+        insert into cars (id,manufacture,year)
+        values (#{id},#{manufacture},#{year})
+    </insert>
+    <update id="updateEntity" parameterType="serviceStation.models.Car">
+        update cars set
+        manufacture = #{manufacture},
+        year = #{year}
+        where id = #{id}
+    </update>
+    <delete id="removeEntity">
+        delete from cars where id = #{id}
+    </delete>
+    <select id="showAll" resultMap="result">select * from cars</select>
+</mapper>

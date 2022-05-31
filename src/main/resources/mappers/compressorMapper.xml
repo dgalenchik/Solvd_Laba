@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="serviceStation.dao.ICompressorDAO">
+    <resultMap id="result" autoMapping="false" type="serviceStation.models.Compressor">
+        <result property="id" column="id"/>
+        <result property="manufacture" column="manufacture"/>
+        <result property="performance" column="perfomance"/>
+    </resultMap>
+    <select id="getEntityById" parameterType="Integer" resultMap="result">
+        select * from compressors where id = #{id}
+    </select>
+    <insert id="saveCompressor" parameterType="serviceStation.models.Compressor" useGeneratedKeys="true"
+            keyProperty="id"
+            timeout="20">
+        insert into compressors (id,manufacture,perfomance)
+        values (#{id},#{manufacture},#{performance})
+    </insert>
+    <update id="updateCompressor" parameterType="serviceStation.models.Compressor">
+        update compressors set
+        manufacture = #{manufacture},
+        perfomance = #{performance}
+        where id = #{id}
+    </update>
+    <delete id="removeCompressor">
+        delete from compressors where id = #{id}
+    </delete>
+    <select id="showAllCompressors" resultMap="result">select * from compressors</select>
+</mapper>

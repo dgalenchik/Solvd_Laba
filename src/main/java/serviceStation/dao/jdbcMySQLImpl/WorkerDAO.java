@@ -6,16 +6,17 @@ import serviceStation.dao.IWorkerDAO;
 import serviceStation.dao.connectionPool.ConnectionPool;
 import serviceStation.models.Worker;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class WorkerDAO implements IWorkerDAO {
     private static final Logger LOGGER = LogManager.getLogger(WorkerDAO.class);
-    private static Properties p = new Properties();
-    private Worker worker = new Worker();
-    private ConnectionPool connectionPool = ConnectionPool.getInstance();
+    private static final Properties p = new Properties();
+    private final Worker worker = new Worker();
+    private final ConnectionPool connectionPool = ConnectionPool.getInstance();
     private Connection connection;
     private PreparedStatement pr = null;
     private ResultSet resultSet = null;
@@ -56,7 +57,7 @@ public class WorkerDAO implements IWorkerDAO {
                     ("Insert into workers (position,experience,users_id) Values (?,?,?)");
             pr.setString(1, entity.getPosition());
             pr.setInt(2, entity.getExperience());
-            pr.setInt(3,entity.getUsers_id());
+            pr.setInt(3, entity.getUsers_id());
             pr.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -79,7 +80,7 @@ public class WorkerDAO implements IWorkerDAO {
             pr.setString(1, entity.getPosition());
             pr.setInt(2, entity.getExperience());
             pr.setInt(3, entity.getUsers_id());
-            pr.setInt(4,entity.getId());
+            pr.setInt(4, entity.getId());
             pr.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info(e);

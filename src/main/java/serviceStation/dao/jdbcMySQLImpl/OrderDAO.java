@@ -6,16 +6,17 @@ import serviceStation.dao.IOrderDAO;
 import serviceStation.dao.connectionPool.ConnectionPool;
 import serviceStation.models.Order;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class OrderDAO implements IOrderDAO {
     private static final Logger LOGGER = LogManager.getLogger(OrderDAO.class);
-    private static Properties p = new Properties();
-    private Order order = new Order();
-    private ConnectionPool connectionPool = ConnectionPool.getInstance();
+    private static final Properties p = new Properties();
+    private final Order order = new Order();
+    private final ConnectionPool connectionPool = ConnectionPool.getInstance();
     private Connection connection;
     private PreparedStatement pr = null;
     private ResultSet resultSet = null;

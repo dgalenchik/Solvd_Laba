@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="serviceStation.dao.IUserDAO">
+    <resultMap id="result" autoMapping="false" type="serviceStation.models.User">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="surname" column="surname"/>
+        <result property="email" column="email"/>
+    </resultMap>
+    <select id="getEntityById" parameterType="Integer" resultMap="result">
+        select * from users where id = #{id}
+    </select>
+    <insert id="saveUser" parameterType="serviceStation.models.User" useGeneratedKeys="true" keyProperty="id"
+            timeout="20">
+        insert into users (id,name,surname,email)
+        values (#{id},#{name},#{surname},#{email})
+    </insert>
+    <update id="updateUser" parameterType="serviceStation.models.User">
+        update users set
+        name = #{name},
+        surname = #{surname},
+        email = #{email}
+        where id = #{id}
+    </update>
+    <delete id="removeUser">
+        delete from users where id = #{id}
+    </delete>
+    <select id="showAllUsers" resultMap="result">select * from users</select>
+    <insert id="generateUsers" parameterType="serviceStation.models.User" useGeneratedKeys="true" keyProperty="id"
+            timeout="20">
+        insert into users (id,name,surname,email)
+        values (#{id},#{name},#{surname},#{email})
+    </insert>
+</mapper>
