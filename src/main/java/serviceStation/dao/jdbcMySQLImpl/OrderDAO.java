@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class OrderDAO implements IOrderDAO {
@@ -146,6 +148,38 @@ public class OrderDAO implements IOrderDAO {
                 LOGGER.info(e);
             }
         }
+    }
+
+    @Override
+    public List<Order> getOrders() {
+        List<Order>orders = new ArrayList<>();
+        try {
+            connection = connectionPool.retrieve();
+            pr = connection.prepareStatement("Select * from orders");
+            pr.execute();
+            resultSet = pr.getResultSet();
+            while (resultSet.next()) {
+                Order order = new Order();
+                order.setId(resultSet.getInt("id"));
+                order.setName(resultSet.getString("name"));
+                order.setPrice(resultSet.getInt("price"));
+                order.setWorkers_id(resultSet.getInt("workers_id"));
+                order.setClients_id(resultSet.getInt("clients_id"));
+                order.setCars_id(resultSet.getInt("cars_id"));
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            LOGGER.info(e);
+        } finally {
+            try {
+                if (connection != null) connectionPool.putback(connection);
+                if (resultSet != null) resultSet.close();
+                if (pr != null) pr.close();
+            } catch (SQLException e) {
+                LOGGER.info(e);
+            }
+        }
+        return orders;
     }
 }
 

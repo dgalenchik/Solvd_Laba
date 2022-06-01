@@ -14,7 +14,7 @@ import java.io.Reader;
 import java.util.List;
 
 public class UserDAO implements IUserDAO {
-    private static final Logger LOGGER = LogManager.getLogger(CarDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
     private static IUserDAO userMapper;
     private static SqlSession sqlSession;
     private static final SqlSessionFactory sqlSessionFactory;

@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class CarDAO implements ICarDAO {
@@ -131,6 +133,35 @@ public class CarDAO implements ICarDAO {
             } catch (SQLException e) {
                 LOGGER.info(e);
             }
+        }
+    }
+
+    @Override
+    public List<Car> getCars() {
+        List<Car> cars = new ArrayList<>();
+        try {
+            connection = connectionPool.retrieve();
+            pr = connection.prepareStatement("Select * from cars");
+            pr.execute();
+            resultSet = pr.getResultSet();
+            while (resultSet.next()) {
+                Car car = new Car();
+                car.setId(resultSet.getInt("id"));
+                car.setManufacture(resultSet.getString("manufacture"));
+                car.setYear(resultSet.getInt("year"));
+                cars.add(car);
+            }
+        } catch (SQLException e) {
+            LOGGER.info(e);
+        } finally {
+            try {
+                if (connection != null) connectionPool.putback(connection);
+                if (resultSet != null) resultSet.close();
+                if (pr != null) pr.close();
+            } catch (SQLException e) {
+                LOGGER.info(e);
+            }
+            return cars;
         }
     }
 }
