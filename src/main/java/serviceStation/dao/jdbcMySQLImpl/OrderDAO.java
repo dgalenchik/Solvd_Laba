@@ -35,9 +35,9 @@ public class OrderDAO implements IOrderDAO {
                 order.setId(resultSet.getInt("id"));
                 order.setName(resultSet.getString("name"));
                 order.setPrice(resultSet.getInt("price"));
-                order.setWorkers_id(resultSet.getInt("workers_id"));
-                order.setClients_id(resultSet.getInt("clients_id"));
-                order.setCars_id(resultSet.getInt("cars_id"));
+                order.setWorkersId(resultSet.getInt("workers_id"));
+                order.setClientsId(resultSet.getInt("clients_id"));
+                order.setCarsId(resultSet.getInt("cars_id"));
             }
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -61,9 +61,9 @@ public class OrderDAO implements IOrderDAO {
                     ("Insert into orders (name,price,workers_id,clients_id,cars_id) Values (?,?,?,?,?)");
             pr.setString(1, entity.getName());
             pr.setInt(2, entity.getPrice());
-            pr.setInt(3, entity.getWorkers_id());
-            pr.setInt(4, entity.getClients_id());
-            pr.setInt(5, entity.getCars_id());
+            pr.setInt(3, entity.getWorkersId());
+            pr.setInt(4, entity.getClientsId());
+            pr.setInt(5, entity.getCarsId());
             pr.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -85,9 +85,9 @@ public class OrderDAO implements IOrderDAO {
                     ("Update orders Set name=?,`price`=?,workers_id=?,clients_id=?,cars_id=? where id=?");
             pr.setString(1, entity.getName());
             pr.setInt(2, entity.getPrice());
-            pr.setInt(3, entity.getWorkers_id());
-            pr.setInt(4, entity.getClients_id());
-            pr.setInt(5, entity.getCars_id());
+            pr.setInt(3, entity.getWorkersId());
+            pr.setInt(4, entity.getClientsId());
+            pr.setInt(5, entity.getCarsId());
             pr.setInt(6, entity.getId());
             pr.executeUpdate();
         } catch (SQLException e) {
@@ -132,9 +132,9 @@ public class OrderDAO implements IOrderDAO {
                 order.setId(resultSet.getInt("id"));
                 order.setName(resultSet.getString("name"));
                 order.setPrice(resultSet.getInt("price"));
-                order.setWorkers_id(resultSet.getInt("workers_id"));
-                order.setClients_id(resultSet.getInt("clients_id"));
-                order.setCars_id(resultSet.getInt("cars_id"));
+                order.setWorkersId(resultSet.getInt("workers_id"));
+                order.setClientsId(resultSet.getInt("clients_id"));
+                order.setCarsId(resultSet.getInt("cars_id"));
                 LOGGER.info(order);
             }
         } catch (SQLException e) {
@@ -152,7 +152,7 @@ public class OrderDAO implements IOrderDAO {
 
     @Override
     public List<Order> getOrders() {
-        List<Order>orders = new ArrayList<>();
+        List<Order> orders = new ArrayList<>();
         try {
             connection = connectionPool.retrieve();
             pr = connection.prepareStatement("Select * from orders");
@@ -163,9 +163,9 @@ public class OrderDAO implements IOrderDAO {
                 order.setId(resultSet.getInt("id"));
                 order.setName(resultSet.getString("name"));
                 order.setPrice(resultSet.getInt("price"));
-                order.setWorkers_id(resultSet.getInt("workers_id"));
-                order.setClients_id(resultSet.getInt("clients_id"));
-                order.setCars_id(resultSet.getInt("cars_id"));
+                order.setWorkersId(resultSet.getInt("workers_id"));
+                order.setClientsId(resultSet.getInt("clients_id"));
+                order.setCarsId(resultSet.getInt("cars_id"));
                 orders.add(order);
             }
         } catch (SQLException e) {

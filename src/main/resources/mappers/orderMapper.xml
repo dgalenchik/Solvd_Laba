@@ -6,9 +6,9 @@
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="price" column="price"/>
-        <result property="workers_id" column="workers_id"/>
-        <result property="clients_id" column="clients_id"/>
-        <result property="cars_id" column="cars_id"/>
+        <result property="workersId" column="workers_id"/>
+        <result property="clientsId" column="clients_id"/>
+        <result property="carsId" column="cars_id"/>
     </resultMap>
     <select id="getEntityById" parameterType="Integer" resultMap="result">
         select * from orders where id = #{id}
@@ -16,15 +16,15 @@
     <insert id="saveOrder" parameterType="serviceStation.models.Order" useGeneratedKeys="true" keyProperty="id"
             timeout="20">
         insert into orders (id,name,price,workers_id,clients_id,cars_id)
-        values (#{id},#{name},#{price},#{workers_id},#{clients_id},#{cars_id})
+        values (#{id},#{name},#{price},#{workersId},#{clientsId},#{carsId})
     </insert>
     <update id="updateOrder" parameterType="serviceStation.models.Order">
         update orders set
         name = #{name},
         price = #{price},
-        workers_id = #{workers_id},
-        clients_id = #{clients_id},
-        cars_id = #{cars_id}
+        workers_id = #{workersId},
+        clients_id = #{clientsId},
+        cars_id = #{carsId}
         where id = #{id}
     </update>
     <delete id="removeOrder">

@@ -33,7 +33,7 @@ public class WorkerDAO implements IWorkerDAO {
                 worker.setId(resultSet.getInt("id"));
                 worker.setPosition(resultSet.getString("position"));
                 worker.setExperience(resultSet.getInt("experience"));
-                worker.setUsers_id(resultSet.getInt("users_id"));
+                worker.setUsersId(resultSet.getInt("users_id"));
             }
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -57,7 +57,7 @@ public class WorkerDAO implements IWorkerDAO {
                     ("Insert into workers (position,experience,users_id) Values (?,?,?)");
             pr.setString(1, entity.getPosition());
             pr.setInt(2, entity.getExperience());
-            pr.setInt(3, entity.getUsers_id());
+            pr.setInt(3, entity.getUsersId());
             pr.executeUpdate();
         } catch (SQLException e) {
             LOGGER.info(e);
@@ -79,7 +79,7 @@ public class WorkerDAO implements IWorkerDAO {
                     ("Update workers Set position=?,`experience`=?,users_id=? where id=?");
             pr.setString(1, entity.getPosition());
             pr.setInt(2, entity.getExperience());
-            pr.setInt(3, entity.getUsers_id());
+            pr.setInt(3, entity.getUsersId());
             pr.setInt(4, entity.getId());
             pr.executeUpdate();
         } catch (SQLException e) {
@@ -124,7 +124,7 @@ public class WorkerDAO implements IWorkerDAO {
                 worker.setId(resultSet.getInt("id"));
                 worker.setPosition(resultSet.getString("position"));
                 worker.setExperience(resultSet.getInt("experience"));
-                worker.setUsers_id(resultSet.getInt("users_id"));
+                worker.setUsersId(resultSet.getInt("users_id"));
                 LOGGER.info(worker);
             }
         } catch (SQLException e) {

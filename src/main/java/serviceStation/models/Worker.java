@@ -4,16 +4,16 @@ public class Worker {
     private int id;
     private String position;
     private int experience;
-    private int users_id;
+    private int usersId;
 
     public Worker() {
     }
 
-    public Worker(int id, String position, int experience, int users_id) {
+    public Worker(int id, String position, int experience, int usersId) {
         this.id = id;
         this.position = position;
         this.experience = experience;
-        this.users_id = users_id;
+        this.usersId = usersId;
     }
 
     public int getId() {
@@ -40,12 +40,12 @@ public class Worker {
         this.experience = experience;
     }
 
-    public int getUsers_id() {
-        return users_id;
+    public int getUsersId() {
+        return usersId;
     }
 
-    public void setUsers_id(int users_id) {
-        this.users_id = users_id;
+    public void setUsersId(int usersId) {
+        this.usersId = usersId;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class Worker {
                 "id=" + id +
                 ", position='" + position + '\'' +
                 ", experience=" + experience +
-                ", users_id=" + users_id +
+                ", usersId=" + usersId +
                 '}';
     }
 }

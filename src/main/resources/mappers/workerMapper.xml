@@ -6,7 +6,7 @@
         <result property="id" column="id"/>
         <result property="position" column="position"/>
         <result property="experience" column="experience"/>
-        <result property="users_id" column="users_id"/>
+        <result property="usersId" column="users_id"/>
     </resultMap>
     <select id="getEntityById" parameterType="Integer" resultMap="result">
         select * from workers where id = #{id}
@@ -14,13 +14,13 @@
     <insert id="saveWorker" parameterType="serviceStation.models.Worker" useGeneratedKeys="true" keyProperty="id"
             timeout="20">
         insert into workers (id,position,experience,users_id)
-        values (#{id},#{position},#{experience},#{users_id})
+        values (#{id},#{position},#{experience},#{usersId})
     </insert>
     <update id="updateWorker" parameterType="serviceStation.models.Worker">
         update workers set
         position = #{position},
         experience = #{experience},
-        users_id = #{users_id}
+        users_id = #{usersId}
         where id = #{id}
     </update>
     <delete id="removeWorker">

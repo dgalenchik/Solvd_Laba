@@ -4,28 +4,28 @@ public class Order {
     private int id;
     private String name;
     private int price;
-    private int workers_id;
-    private int clients_id;
-    private int cars_id;
+    private int workersId;
+    private int clientsId;
+    private int carsId;
 
     public Order() {
     }
 
-    public Order(String name, int price, int workers_id, int clients_id, int cars_id) {
+    public Order(String name, int price, int workersId, int clientsId, int carsId) {
         this.name = name;
         this.price = price;
-        this.workers_id = workers_id;
-        this.clients_id = clients_id;
-        this.cars_id = cars_id;
+        this.workersId = workersId;
+        this.clientsId = clientsId;
+        this.carsId = carsId;
     }
 
-    public Order(int id, String name, int price, int workers_id, int clients_id, int cars_id) {
+    public Order(int id, String name, int price, int workersId, int clientsId, int carsId) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.workers_id = workers_id;
-        this.clients_id = clients_id;
-        this.cars_id = cars_id;
+        this.workersId = workersId;
+        this.clientsId = clientsId;
+        this.carsId = carsId;
     }
 
     public int getId() {
@@ -52,28 +52,28 @@ public class Order {
         this.price = price;
     }
 
-    public int getWorkers_id() {
-        return workers_id;
+    public int getWorkersId() {
+        return workersId;
     }
 
-    public void setWorkers_id(int workers_id) {
-        this.workers_id = workers_id;
+    public void setWorkersId(int workersId) {
+        this.workersId = workersId;
     }
 
-    public int getClients_id() {
-        return clients_id;
+    public int getClientsId() {
+        return clientsId;
     }
 
-    public void setClients_id(int clients_id) {
-        this.clients_id = clients_id;
+    public void setClientsId(int clientsId) {
+        this.clientsId = clientsId;
     }
 
-    public int getCars_id() {
-        return cars_id;
+    public int getCarsId() {
+        return carsId;
     }
 
-    public void setCars_id(int cars_id) {
-        this.cars_id = cars_id;
+    public void setCarsId(int carsId) {
+        this.carsId = carsId;
     }
 
     @Override
@@ -82,9 +82,9 @@ public class Order {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +
-                ", workers_id=" + workers_id +
-                ", clients_id=" + clients_id +
-                ", cars_id=" + cars_id +
+                ", workersId=" + workersId +
+                ", clientsId=" + clientsId +
+                ", carsId=" + carsId +
                 '}';
     }
 }

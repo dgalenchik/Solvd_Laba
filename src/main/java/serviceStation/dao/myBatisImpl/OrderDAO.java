@@ -7,7 +7,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import serviceStation.dao.IOrderDAO;
-import serviceStation.models.Car;
 import serviceStation.models.Order;
 
 import java.io.IOException;
@@ -81,11 +80,12 @@ public class OrderDAO implements IOrderDAO {
             sqlSession.close();
         }
     }
+
     @Override
     public List<Order> getOrders() {
         List<Order> orders;
-        try{
-            sqlSession =sqlSessionFactory.openSession();
+        try {
+            sqlSession = sqlSessionFactory.openSession();
             orders = sqlSession.selectList("showAllOrders");
         } finally {
             sqlSession.close();

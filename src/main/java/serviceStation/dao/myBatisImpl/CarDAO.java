@@ -86,9 +86,9 @@ public class CarDAO implements ICarDAO {
     @Override
     public List<Car> getCars() {
         List<Car> cars;
-        try{
-            sqlSession =sqlSessionFactory.openSession();
-             cars = sqlSession.selectList("showAll");
+        try {
+            sqlSession = sqlSessionFactory.openSession();
+            cars = sqlSession.selectList("showAll");
         } finally {
             sqlSession.close();
         }
