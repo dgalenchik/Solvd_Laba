@@ -1,6 +1,10 @@
 package serviceStation.models;
 
-public class Order {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class Order implements Listener {
+    private static final Logger LOGGER = LogManager.getLogger(Order.class);
     private int id;
     private String name;
     private int price;
@@ -86,5 +90,10 @@ public class Order {
                 ", clientsId=" + clientsId +
                 ", carsId=" + carsId +
                 '}';
+    }
+
+    @Override
+    public void notifyListener() {
+        LOGGER.info("The price was changed to: " + getPrice());
     }
 }
