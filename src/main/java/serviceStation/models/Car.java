@@ -1,6 +1,10 @@
 package serviceStation.models;
 
-public class Car {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class Car implements Listener {
+    private static final Logger LOGGER = LogManager.getLogger(Car.class);
     private int id;
     private String manufacture;
     private int year;
@@ -50,5 +54,10 @@ public class Car {
                 ", manufacture='" + manufacture + '\'' +
                 ", year=" + year +
                 '}';
+    }
+
+    @Override
+    public void notifyListener() {
+        LOGGER.info("The order with car: " + this + "\n" + "has changed the price");
     }
 }

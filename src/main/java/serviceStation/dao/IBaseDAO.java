@@ -1,8 +1,11 @@
 package serviceStation.dao;
 
-public interface IBaseDAO <T>{
+public interface IBaseDAO<T> {
     T getEntityById(int id);
+
     void saveEntity(T entity);
-    void updateEntity (T entity);
-    void removeEntity (T entity);
+
+    void updateEntity(T entity);
+
+    void removeEntity(T entity);
 }

@@ -4,8 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import serviceStation.dao.ICarDAO;
 import serviceStation.dao.IOrderDAO;
-import serviceStation.dao.factory.AbstractFactory;
-import serviceStation.dao.factory.MyBatisDAOFactory;
+import serviceStation.dao.factory.FactoryGenerator;
 import serviceStation.models.Car;
 import serviceStation.models.Listener;
 import serviceStation.models.Order;
@@ -29,8 +28,8 @@ public class Discount {
     public static void makeDiscount(String manufacture, double discount) {
         if (discount <= 0) throw new IllegalArgumentException("The value of discount must be positive: " + discount);
 
-        ICarDAO carDAO = (ICarDAO) new AbstractFactory().<MyBatisDAOFactory>getFactory("mybatis").createDAO("car");
-        IOrderDAO orderDAO = (IOrderDAO) new AbstractFactory().<MyBatisDAOFactory>getFactory("mybatis").createDAO("order");
+        ICarDAO carDAO = (ICarDAO) FactoryGenerator.createFactory("mybatis").getFactory("car");
+        IOrderDAO orderDAO = (IOrderDAO) FactoryGenerator.createFactory("mybatis").getFactory("order");
 
         List<Order> discountedOrders = new ArrayList<>();
         List<Car> cars = carDAO.getCars().stream().filter(c -> c.getManufacture() != null && c.getManufacture().equals(manufacture)).collect(Collectors.toList());
@@ -52,10 +51,14 @@ public class Discount {
     }
 
     public static void changePriceById(int id, int price) {
-        Order order = (Order) new AbstractFactory().<MyBatisDAOFactory>getFactory("mybatis").createDAO("order").getEntityById(id);
+        IOrderDAO orderDAO = (IOrderDAO) FactoryGenerator.createFactory("mybatis").getFactory("order");
+        ICarDAO carDAO = (ICarDAO) FactoryGenerator.createFactory("mybatis").getFactory("car");
+        Order order = orderDAO.getEntityById(1);
+        Car car = carDAO.getEntityById(order.getCarsId());
+        listeners.add(car);
         listeners.add(order);
         order.setPrice(price);
-        new AbstractFactory().<MyBatisDAOFactory>getFactory("mybatis").createDAO("order").updateEntity(order);
+        FactoryGenerator.createFactory("mybatis").getFactory("order").updateEntity(order);
         for (Listener l : listeners) {
             l.notifyListener();
         }
